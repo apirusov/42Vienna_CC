@@ -116,7 +116,73 @@ EXAMPLE
 
 /*int ft_printf(const char *, ...)
 {
-	
+	int ft_printf(const char *, ...)
+{
+	char *format_spec;
+       size_t i;
+       va_list args;
+       va_start(args, format_spec);
+
+       fo
+       i = 0;
+       while (format_spec[i] != '\0')
+       {
+              if (format_spec[i] == '%')
+              {
+                     i++;
+                     if (format_spec[i] == 'd' || format_spec[i] == 'i')
+                     {
+                            int x = va_arg(args, int);
+                            printf("%d", x);
+                     }
+                     else if (format_spec[i] == 'o')
+                     {
+                            unsigned int x = va_arg(args, unsigned int);
+                            printf("%o", x);
+                     }
+                     else if (format_spec[i] == 'u')
+                     {
+                            unsigned int x = va_arg(args, unsigned int);
+                            printf("%u", x);
+                     }
+                     else if (format_spec[i] == 'x' || format_spec[i] == 'X')
+                     {
+                            unsigned int x = va_arg(args, unsigned int);
+                            printf("%x", x);
+                     }
+                     else if (format_spec[i] == 'f' || format_spec[i] == 'g' || format_spec[i] == 'G')
+                     {
+                            float x = va_arg(args, double);
+                            printf("%f", x);
+                     }
+                     else if (format_spec[i] == 'e' || format_spec[i] == 'E')
+                     {
+                            float x = va_arg(args, double);
+                            printf("%e", x);
+                     }
+                     else if (format_spec[i] == 's')
+                     {
+                            char *x = va_arg(args, char *);
+                            printf("%s", x);
+                     }
+                     else if (format_spec[i] == 'b')
+                     {
+                            char *x = va_arg(args, char *);
+                            printf("%b", x);
+                     }
+                     else if (format_spec[i] == '%')
+                     {
+                            printf("%%");
+                     }
+              }
+              else
+              {
+                     printf("%c", format_spec[i]);
+              }
+              i++;
+       }
+
+}
 }
 */
 #include <stdlib.h>
