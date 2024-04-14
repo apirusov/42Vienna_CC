@@ -116,9 +116,26 @@ void	render_format(t_data *data)
 		print_char(data, va_arg(data->ap, int));
 	else if (specifier == 's')
 		print_str(data, va_arg(data->ap, char *));
+	//"dipxXu" -->
+	if (inside("dioupxXu", specifier))
+	{
+		// di -> signed int -> long
+		// p -> void * unsigned long
+		// xXuo -> unsigned int -> long 
+		// fetch the data from va_arg
+		if (inside("di", specifier))
+			??? = (long)va_arg(data->ap, int);
+		else if (specifier == 'p')
+			??? = (unsigned long)va_arg(data->ap, void *);
+		print_digit(data, va_arg(data->ap, int));
+
+		// Call one! function for 'em all!
+		print_digit
+	}
+		
 
 
-	count = 0;
+	/*count = 0;
 	if (data->format.specifier == '%')
 		count += print_char(data, '%');
 	else if (data->format.specifier == 'c')
@@ -137,7 +154,7 @@ void	render_format(t_data *data)
 		count += print_digit((long)(va_arg(data->ap, unsigned int)), 16, "0123456789ABCDEF");
 	else
 		count += write(1, &data->format.specifier, 1);
-	data->chars_written += count;
+	data->chars_written += count;*/
 }
 
 %[flags][width][.precision][length]specifier
@@ -161,7 +178,7 @@ int	ft_printf(const char *format, ...)
 
 	va_start(data.ap, format); // we kick the data from format in a data structure
 	if (init_data(&data, format)) // implicit declaration of a function
-		return (ERROR);
+		return (MALLOC_ERROR);
 	while (*data.s)
 	{
 		if (*data.s == '%' && *(data.s++) != '%')

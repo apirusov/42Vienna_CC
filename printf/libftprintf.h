@@ -30,6 +30,8 @@
 # define NUMBERS	"0123456789"
 # define SPECIFIERS	"cspdobiuxX%"
 
+typedef union 
+
 typedef enum {
 	OK = 0,
 	ERROR = -1,
