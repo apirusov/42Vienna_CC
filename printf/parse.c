@@ -18,10 +18,11 @@ static int atoi_printf(t_data *data)
 	int	res;
 
 	res = 0;
-	while (inside(NUMBERS, *data->s)
+	while (inside(NUMBERS, *data->s))
 		res = (res * 10) + (*data->s++ - '0');
-	}
+	return (res);
 }
+
 
 static void	get_value(t_data *data, int *value)
 {
@@ -91,12 +92,14 @@ int	get_format(t_data *data)
 	return (OK);
 }
 
-int print_format(char specifier, va_list args)
+/*int print_format(char specifier, va_list args)
 {
        size_t   count;
 
        count = 0;
-       if (specifier == 'c')
+	   if (specifier == '%')
+			count += write(1, "%", 1);
+	   else if (specifier == 'c')
               count += print_char(va_arg(args, int)); // (char) actually casts an int
        else if (specifier == 's')
               count += print_str(va_arg(args, char *));
@@ -110,10 +113,10 @@ int print_format(char specifier, va_list args)
               count += print_digit((long)(va_arg(args, unsigned int)), 16, "0123456789abcdef");
        else if (specifier == 'X')
               count += print_digit((long)(va_arg(args, unsigned int)), 16, "0123456789ABCDEF");
-/*     else if (specifier == 'p')
-            count += print_digit((long)(va_arg(args, unsigned int)), 16, "0123456789abcdef");*/
+     else if (specifier == 'p')
+            count += print_digit((long)(va_arg(args, unsigned int)), 16, "0123456789abcdef");
        else
               count += write(1, &specifier, 1);
        return (count);
-}
+}*/
 

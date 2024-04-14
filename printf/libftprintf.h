@@ -15,7 +15,7 @@
 
 # include <limits.h>
 # include <locale.h>
-# include <libexplain/malloc.h>
+//# include <libexplain/malloc.h>
 # include <stdarg.h>
 # include <stdbool.h>
 # include <stdint.h>
@@ -28,7 +28,7 @@
 
 # define FLAGS		"+ 0-#"
 # define NUMBERS	"0123456789"
-# define SPECIFIERS	"cspdobiuxX"
+# define SPECIFIERS	"cspdobiuxX%"
 
 typedef enum {
 	OK = 0,
@@ -64,12 +64,19 @@ typedef struct s_data {
 	size_t		chars_written;
 	char		*buf; // 4096 in a HEAP
 	size_t		buf_index;
+	t_format	format;
 }	t_data;
 
-
+int ft_atoi(const char *str);
 int ft_printf(const char *format, ...);
 int get_format(t_data *data);
+size_t	ft_strlen(const char *s);
 void	*ft_bzero(void *s, size_t n);
 void	*ft_memset(void *s, int c, size_t n);
+void	write_buf(t_data *data, char c);
+void	flush_buf(t_data *data);
+void    putchar_buf_n(char c, int precision, t_data *data);
+void	print_char(t_data *data, int c);
+void    putcstr_buf_n(char *s, int precision, t_data *data);
 
 #endif
