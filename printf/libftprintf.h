@@ -56,6 +56,7 @@ typedef struct s_format {
 	int		width_val;
 	int		precision_val;
 	e_base	base;
+	size_t	padding_spaces;
 }	t_format;
 
 typedef struct s_data {

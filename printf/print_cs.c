@@ -27,37 +27,52 @@ void	print_char(t_data *data, int c)
 // %[0+ #] - NO
 // [-][width][.precision] - YES 
 
+static void set_str_padding_spaces(t_data *data, char *s)
+{
+	int len;
+	len = ft_strlen(s);
+	//check if width is OK
+	if (data->format.width_val > 0)
+	{
+		// check if precision is OK
+		if (data->format.precision_val >= len)
+			data->format.padding_spaces = data->format.width_val - len;
+		// write precise n from str
+		//[%10.3s], "hello" -> [     hel]
+		else if (data->format.precision_val < 0)
+			data->format.padding_spaces = data->format.width_val - data->format.precision_val;
+	}
+	// no width [%10s], "hello" -> [     hello]
+	else
+		data->format.padding_spaces = data->format.width_val - len;
+}
+
 void	print_str(char *str)
 {
 	if (NULL == str)
 		str = "(null)";
+	// setting the spaces
+	set_str_padding_spaces(*data, *s);
+	// write with justification
 	if (data->format.left_just)
 	{
 		if (data->format.precision_val >= 0)
 			putstr_buf_n(s, data->format.precision_val, data);
 		else
 			putstr_buf_n(s, ft_strlen(s), data);
-		
 
+		// put padding spaces
+		putchar_buf_n(' ', data->format.padding_spaces, data);
 	}
 	else
 	{
-		while (data->format.width_val--)
-			print_char(' ');
-		while (*str)
-			print_char((int)*str++);
+		// put padding spaces
+		putchar_buf_n(' ', data->format.padding_spaces, data);
+		if (data->format.precision_val >= 0)
+			putstr_buf_n(s, data->format.precision_val, data);
+		else
+			putstr_buf_n(s, ft_strlen(s), data);		
 	}
-
-	if (!str)
-		return (write(1, "(null)", 6) + 6);
-	count = 0;
-	while (*str)
-	{
-		print_char((int)*str);
-		count++;
-		str++;
-	}
-	return (count);
 }
 /*
 int	print_digit(long n, int base, char *sym)

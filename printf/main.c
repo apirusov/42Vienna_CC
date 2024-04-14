@@ -28,7 +28,23 @@ void    test_char()
 	int	n = 10;
 	TEST("This is a char: "Y"[%-*c]"RST"\n", n, 'A');
 	TEST("This is a char: "G"[%-*c]"RST"\n", n, 'A');
+}
 
+void test_str()
+{
+	char *null = NULL;
+	TEST("string null: %s\n", null);
+	char *s = "Special Beam Cannon";
+	TEST("This is a string: "Y"[%s]"RST"\n", s);
+	TEST("This is a string: "G"[%s]"RST"\n", s);
+	TEST("This is a string: "Y"[%10s]"RST"\n", s);
+	TEST("This is a string: "G"[%10s]"RST"\n", s);
+	TEST("This is a string: "Y"[%10.3s]"RST"\n", s);
+	TEST("This is a string: "G"[%10.3s]"RST"\n", s);
+	TEST("This is a string: "Y"[%-10.3s]"RST"\n", s);
+	TEST("This is a string: "G"[%-10.3s]"RST"\n", s);
+	TEST("This is a string: "Y"[%*.*s]"RST"\n", 10, s);
+	TEST("This is a string: "G"[%*.*s]"RST"\n", 10, s);
 }
 
 int	main(int ac, char **av)
@@ -38,6 +54,7 @@ int	main(int ac, char **av)
 		if (av[1] == "run tests")
 		{
 			test_char();
+			test_str();
 		}
 		else 
 		{
