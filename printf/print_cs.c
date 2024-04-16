@@ -6,7 +6,7 @@
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:39:48 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/15 16:49:46 by apirusov         ###   ########.fr       */
+/*   Updated: 2024/04/16 17:39:03 by apirusov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,60 +14,69 @@
 
 void	print_char(t_data *data, int c)
 {
-    int width;
+	int	width;
 
-    width = data->format.width_val;
-    if (width > 1)
-    {
-        if (data->format.left_just)
-        {
-            putchar_buf_n((char)c, 1, data);
-            putchar_buf_n(' ', width - 1, data);
-        }
-        else
-        {
-            putchar_buf_n(' ', width - 1, data);
-            putchar_buf_n((char)c, 1, data);
-        }
-    }
-    else
-        putchar_buf_n((char)c, 1, data);
-}
-
-static void set_str_padding_spaces(t_data *data, char *s)
-{
-	int len;
-	len = ft_strlen(s);
-	if (data->format.width_val > 0)
+	width = data->fmt.width_val;
+	if (width > 1 && c != '%')
 	{
-		if (data->format.precision_val >= len)
-			data->format.padding_spaces = data->format.width_val - len;
-		else if (data->format.precision_val < 0)
-			data->format.padding_spaces = data->format.width_val - data->format.precision_val;
+		if (data->fmt.left_just)
+		{
+			putchar_buf_n((char)c, 1, data);
+			putchar_buf_n(' ', width - 1, data);
+		}
+		else
+		{
+			putchar_buf_n(' ', width - 1, data);
+			putchar_buf_n((char)c, 1, data);
+		}
 	}
 	else
-		data->format.padding_spaces = data->format.width_val - len;
+		putchar_buf_n((char)c, 1, data);
 }
 
-void	print_str(char *str)
+static void	set_str_padding_spaces(t_data *data, char *s)
+{
+	int	len;
+
+	if (!ft_strcmp(s, "(null)") && data->fmt.prec_val >= 0 && data->fmt.prec_val < 6)
+		*s = '\0';
+	len = ft_strlen(s); 
+	if (data->fmt.width_val > 0)
+	{
+		if (data->fmt.prec_val >= 0)
+		{
+			if (data->fmt.prec_val > len)
+				data->fmt.padding_spaces = data->fmt.width_val - len;
+			else if (data->fmt.prec_val < len)
+				data->fmt.padding_spaces = data->fmt.width_val - \
+					data->fmt.prec_val;
+		}
+		else
+			data->fmt.padding_spaces = data->fmt.width_val - len;
+	}
+	else
+		data->fmt.padding_spaces = data->fmt.width_val - len;
+}
+
+void	print_str(t_data *data, char *str)
 {
 	if (NULL == str)
 		str = "(null)";
-	set_str_padding_spaces(*data, *s);
-	if (data->format.left_just)
+	set_str_padding_spaces(data, str);
+	if (data->fmt.left_just)
 	{
-		if (data->format.precision_val >= 0)
-			putstr_buf_n(s, data->format.precision_val, data);
+		if (data->fmt.prec_val >= 0)
+			putstr_buf_n(str, data->fmt.prec_val, data);
 		else
-			putstr_buf_n(s, ft_strlen(s), data);
-		putchar_buf_n(' ', data->format.padding_spaces, data);
+			putstr_buf_n(str, ft_strlen(str), data);
+		putchar_buf_n(' ', data->fmt.padding_spaces, data);
 	}
 	else
 	{
-		putchar_buf_n(' ', data->format.padding_spaces, data);
-		if (data->format.precision_val >= 0)
-			putstr_buf_n(s, data->format.precision_val, data);
+		putchar_buf_n(' ', data->fmt.padding_spaces, data);
+		if (data->fmt.prec_val >= 0)
+			putstr_buf_n(str, data->fmt.prec_val, data);
 		else
-			putstr_buf_n(s, ft_strlen(s), data);		
+			putstr_buf_n(str, ft_strlen(str), data);
 	}
 }
