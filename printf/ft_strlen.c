@@ -33,11 +33,3 @@ size_t	ft_strlen(const char *s)
 		return (0);
 	return (ft_strlen(s + 1) + 1);
 }
-/*
-#include <stdlib.h>
-int main(int ac, char **av)
-{
-	(void) ac;
-	printf("%zu\n", ft_strlen(av[1]));
-	return (0);
-}*/

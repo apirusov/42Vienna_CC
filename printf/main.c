@@ -2,69 +2,260 @@
 #include <locale.h>
 #include <stdarg.h>
 #include <stdbool.h>
-//#include <stdint.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <wchar.h>
+#include "libftprintf.h"
 
-# define FTPRINTF ft_printf
-# define PRINTF printf
-# define TEST(fmt, ...) FTPRINTF("ft_printf:\n^ %d bytes written\n", 
-		FTPRINTF(fmt\n, ##__VA_ARGS__)) FTPRINTF("\n") \
-		PRINTF("printf:\n^ %d bytes written\n", 
-		PRINTF(fmt\n\n, ##__VA_ARGS__)) PRINTF("\n\n")
+#define RST "\033[0m"
+#define O   "\033[1;33m"  // BOLD Yellow
+#define R   "\033[1;31m"  // BOLD Red
+#define G   "\033[1;32m"  // BOLD Green
+#define Y   "\033[1;33m"  // BOLD Yellow
+#define B   "\033[1;34m"  // BOLD Blue
+#define M   "\033[1;35m"  // BOLD Magenta
+
 void    test_char()
 {
-	TEST("This is a char "Y"[%-*%]"RST"\n", n);
-	TEST("%%\n");
-	TEST("Characters: %c %c \n\n", 'a', 65);
-    TEST("This is a char: "Y"[%c]"RST"\n", 'A');
-	TEST("This is a char: "G"[%c]"RST"\n", 'A');
-	TEST("This is a char: "Y"[%10c]"RST"\n", 'A');
-	TEST("This is a char: "G"[%10c]"RST"\n", 'A');
-	TEST("This is a char: "Y"[%-10c]"RST"\n", 'A');
-	TEST("This is a char: "G"[%-10c]"RST"\n", 'A');
-	int	n = 10;
-	TEST("This is a char: "Y"[%-*c]"RST"\n", n, 'A');
-	TEST("This is a char: "G"[%-*c]"RST"\n", n, 'A');
+	ft_printf(R"************************* C H A R \tT E S T S *************************\n"RST);
+	int n = 10;
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a char "Y"[%-*%]"RST"\n", n));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a char "G"[%-*%]"RST"\n", n)); // make ignore flags if %%
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: c: \t"Y"[%c]"RST"\n", 99));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: c: \t"G"[%c]"RST"\n", 99));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: "Y"[%%]"RST"\n"));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: "G"[%%]"RST"\n"));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Characters: "Y"%c %c"RST" \n", 'a', 65));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Characters: "G"%c %c"RST" \n", 'a', 65));
+    printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a char: "Y"[%c]"RST"\n", 'A'));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a char: "G"[%c]"RST"\n", 'A'));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a char: "Y"[%10c]"RST"\n", 'A'));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a char: "G"[%10c]"RST"\n", 'A'));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a char: "Y"[%-10c]"RST"\n", 'A'));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a char: "G"[%-10c]"RST"\n", 'A'));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a char: "Y"[%-*c]"RST"\n", n, 'A'));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a char: "G"[%-*c]"RST"\n", n, 'A'));
 }
 
 void test_str()
 {
+	ft_printf(R"************************* S T R \tT E S T S *************************\n"RST);
 	char *null = NULL;
-	TEST("string null: %s\n", null);
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: string null: "Y"%s"RST"\n", null));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: string null: "G"%s"RST"\n", null));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: \t"Y"%s"RST" \n", "A string"));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: \t"G"%s"RST" \n", "A string"));
 	char *s = "Special Beam Cannon";
-	TEST("This is a string: "Y"[%s]"RST"\n", s);
-	TEST("This is a string: "G"[%s]"RST"\n", s);
-	TEST("This is a string: "Y"[%10s]"RST"\n", s);
-	TEST("This is a string: "G"[%10s]"RST"\n", s);
-	TEST("This is a string: "Y"[%10.3s]"RST"\n", s);
-	TEST("This is a string: "G"[%10.3s]"RST"\n", s);
-	TEST("This is a string: "Y"[%-10.3s]"RST"\n", s);
-	TEST("This is a string: "G"[%-10.3s]"RST"\n", s);
-	TEST("This is a string: "Y"[%*.*s]"RST"\n", 10, s);
-	TEST("This is a string: "G"[%*.*s]"RST"\n", 10, s);
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a string: "Y"[%s]"RST"\n", s));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a string: "G"[%s]"RST"\n", s));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a string: "Y"[%10s]"RST"\n", s));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a string: "G"[%10s]"RST"\n", s));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a string: "Y"[%10s]"RST"\n", null));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a string: "G"[%10s]"RST"\n", null));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a string: "Y"[%10.3s]"RST"\n", s));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a string: "G"[%10.3s]"RST"\n", s));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a string: "Y"[%3.3s]"RST"\n", s));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a string: "G"[%3.3s]"RST"\n", s));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a string: "Y"[%10.0s]"RST"\n", s));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a string: "G"[%10.0s]"RST"\n", s));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a string: "Y"[%-10.3s]"RST"\n", s));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a string: "G"[%-10.3s]"RST"\n", s));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a string: "Y"[%-10.3s]"RST"\n", null));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a string: "G"[%-10.3s]"RST"\n", null));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a string: "Y"[%32s]"RST"\n", s));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a string: "G"[%32s]"RST"\n", s));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a string: "Y"[%32.0s]"RST"\n", s));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a string: "G"[%32.0s]"RST"\n", s));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a string: "Y"[%-32.3s]"RST"\n", s));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a string: "G"[%-32.3s]"RST"\n", s));
+//	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a string: "Y"[%*.*s]"RST"\n", 10, s));
+	printf(G"On next call original func makes a char from [%%*.->*s], so doesn't work with that command! Causes segfault\n"G RST);
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a string: "G"[%*.*s]"RST"\n", 10, s));
 }
 
+void test_int()
+{
+	ft_printf(R"************************* I N T \tT E S T S *************************\n"RST);
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: \t"Y"%x"RST"\n", INT_MIN));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: \t"G"%x"RST"\n", INT_MIN));
+	//printf(Y"\t\t^%d bytes written\n", printf("___printf: \tDecimals: %d %ld\n", 1977, 650000L));
+	//printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: \tDecimals: %d %ld\n", 1977, 650000L));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: \tPreceding with blanks [%%10d]: "Y"[%10d]"RST" \n", 1977));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: \tPreceding with blanks [%%10d]: "G"[%10d]"RST" \n", 1977));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: \tPreceding with zeros [%%010d]: "Y"[%010d]"RST" \n", 1977));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: \tPreceding with zeros [%%010d]: "G"[%010d]"RST" \n", 1977));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: \tSome different radices [%%d %%x %%o %%#x %%#o]: "Y"[%d %x %o %#x %#o]"RST" \n", 100, 100, 100, 100, 100));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: \tSome different radices [%%d %%x %%o %%#x %%#o]: "G"[%d %x %o %#x %#o]"RST" \n", 100, 100, 100, 100, 100));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: \tWidth trick [%%*d]: "Y"[%*d]"RST" \n", 5, 10));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: \tWidth trick [%%*d]: "G"[%*d]"RST" \n", 5, 10));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a int [%%i] "Y"[%i]"RST"\n", INT_MIN));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a int [%%i] "G"[%i]"RST"\n", INT_MIN));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a int [%%d] "Y"[%d]"RST"\n", 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a int [%%d] "G"[%d]"RST"\n", 42));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a int [%%10d] "Y"[%10d]"RST"\n", 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a int [%%10d] "G"[%10d]"RST"\n", 42));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a int [%%-10d] "Y"[%-10d]"RST"\n", 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a int [%%-10d] "G"[%-10d]"RST"\n", 42));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a int [%%-+10d] "Y"[%-+10d]"RST"\n", 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a int [%%-+10d] "G"[%-+10d]"RST"\n", 42));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a int [%% 10d] "Y"[% 10d]"RST"\n", 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a int [%% 10d] "G"[% 10d]"RST"\n", 42));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a int [%%1d] "Y"[%1d]"RST"\n", 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a int [%%1d] "G"[%1d]"RST"\n", 42));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a int [%%-10.3d] "Y"[%-10.3d]"RST"\n", 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a int [%%-10.3d] "G"[%-10.3d]"RST"\n", 42));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a int [%%- 10.7d] "Y"[%- 10.7d]"RST"\n", 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a int [%%- 10.7d] "G"[%- 10.7d]"RST"\n", 42));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a int [%% 010.7d] "Y"[% 010.7d]"RST"\n", 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a int [%% 010.7d] "G"[% 010.7d]"RST"\n", 42));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a int [%%+-10.7d] "Y"[%+-10.7d]"RST"\n", 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a int [%%+-10.7d] "G"[%+-10.7d]"RST"\n", 42));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a int [%%- 10.*d] "Y"[%- 10.*d]"RST"\n", 1<<12, 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a int [%%- 10.*d] "G"[%- 10.*d]"RST"\n", 1<<12, 42));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a int [%%0.*d] "Y"[%0.*d]"RST"\n", 1<<8, 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a int [%%0.*d] "G"[%0.*d]"RST"\n", 1<<8, 42));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Crazy [%%-+10.4d]: "Y"[%-+10.4d]"RST"\n", 12345));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Crazy [%%-+10.4d]: "G"[%-+10.4d]"RST"\n", 12345));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Crazy [%%010.8d]: "Y"[%010.8d]"RST"\n", 9876));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Crazy [%%010.8d]: "G"[%010.8d]"RST"\n", 9876));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Crazy [%%-+*.*d]: "Y"[%-+*.*d]"RST"\n", 6, 3, 123));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Crazy [%%-+*.*d]: "G"[%-+*.*d]"RST"\n", 6, 3, 123));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Crazy [%%0*.*d]: "Y"[%0*.*d]"RST"\n", 1<<5, 2, 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Crazy [%%0*.*d]: "G"[%0*.*d]"RST"\n", 1<<5, 2, 42));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Crazy [%%0*.*d]: "Y"[%0*.*d]"RST"\n", 5, 2, 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Crazy [%%0*.*d]: "G"[%0*.*d]"RST"\n", 5, 2, 42));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Crazy [%%-+10.5d]: "Y"[%-+10.5d]"RST"\n", 987654));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Crazy [%%-+10.5d]: "G"[%-+10.5d]"RST"\n", 987654));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Crazy [%%*.*d]: "Y"[%*.*d]"RST"\n", 8, 1<<10, 123));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Crazy [%%*.*d]: "G"[%*.*d]"RST"\n", 8, 1<<10, 123));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Crazy [%%*.*d]: "Y"[%*.*d]"RST"\n", 100, 50, 12345));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Crazy [%%*.*d]: "G"[%*.*d]"RST"\n", 100, 50, 12345));
+//	printf(Y"\t\t^%d bytes written\n", printf("___printf: Crazy: [%-+0*.*d]\n", 1<<7, 3, 987));
+	ft_printf("On next call original func ignores flag '0' when flag '-' is present [%%-+->0*.*d], so doesn't work with that command! Causes segfault\n");
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Crazy [%%-+->0*.*d]: "G"[%-+0*.*d]"RST"\n", 1<<7, 3, 987));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Crazy [%%-1000.500d]: "Y"[%-1000.500d]"RST"\n", 87654));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Crazy [%%-1000.500d]: "G"[%-1000.500d]"RST"\n", 87654));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Crazy [%%*.*d]: "Y"[%*.*d]"RST"\n", 15, 1<<11, 98765));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Crazy [%%*.*d]: "G"[%*.*d]"RST"\n", 15, 1<<11, 98765));
+//	printf(Y"\t\t^%d bytes written\n", printf("___printf: Crazy: [%-+01000.500d]\n", 123456));
+	ft_printf("On next call original func ignores flag '0' when flag '-' is present [%%-+->01000.500d], so doesn't work with that command! Causes segfault\n");
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Crazy [%%-+->01000.500d]: "G"[%-+01000.500d]"RST"\n", 123456));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Crazy [%%0*.*d]: "Y"[%0*.*d]"RST"\n", 1<<6, 3, 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Crazy [%%0*.*d]: "G"[%0*.*d]"RST"\n", 1<<6, 3, 42));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Crazy [%%-+*.*d]: "Y"[%-+*.*d]"RST"\n", 1<<8, 2, 9876));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Crazy [%%-+*.*d]: "G"[%-+*.*d]"RST"\n", 1<<8, 2, 9876));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Max int: "Y"[%d]"RST"\n", INT_MAX));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Max int: "G"[%d]"RST"\n", INT_MAX));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Min int: "Y"[%d]"RST"\n", INT_MIN));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Min int: "G"[%d]"RST"\n", INT_MIN));
+}
+
+void	test_ptr()
+{
+	ft_printf(R"************************* P T R \tT E S T S *************************\n"RST);
+	int n = 42;
+	char *str = NULL;
+	char *name = "Andrey";
+	char *ptr;
+	ptr = name;
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: ptr NULL "Y"%p"RST"\n", str));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: ptr NULL "G"%p"RST"\n", str));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: ptr non NULL "Y"%p"RST"\n", ptr));
+    printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: ptr non NULL "G"%p"RST"\n", ptr));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Basic pointer: "Y"[%p]"RST"\n", &n));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Basic pointer: "G"[%p]"RST"\n", &n));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Width of 20: "Y"[%20p]"RST"\n", &n));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Width of 20: "G"[%20p]"RST"\n", &n));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Left-justified with width of 15: "Y"[%-15p]"RST"\n", &n));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Left-justified with width of 15: "G"[%-15p]"RST"\n", &n));
+//	printf(Y"\t\t^%d bytes written\n", printf("___printf: Alternate form: "Y"[%#p]"RST"\n", &n));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: flag '#' results in undefined behavior with 'p' conversion specifier[%%->#p]\n\tAlternate form: "G"[%#p]"RST"\n", &n));
+//	printf(Y"\t\t^%d bytes written\n", printf("___printf: Crazy combination: "Y"[%#-20p]"RST"\n", &n));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: flag '#' results in undefined behavior with 'p' conversion specifier[%%->#-20p]\n \tCrazy combination: "G"[%#-20p]"RST"\n", &n));
+//	printf(Y"\t\t^%d bytes written\n", printf("___printf: Precision and width: "Y"[%15.8p]"RST"\n", &n));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: precision used with 'p' conversion specifier, resulting in undefined behavior [%%15->.8p]\n \tPrecision and width: "G"[%15.8p]"RST"\n", &n));
+}
+
+void test_X_x()
+{
+	ft_printf(R"************************* H E X \tT E S T S *************************\n"RST);
+	int n = 255;
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: \tThe chars written are "Y"%X"RST"\n", -1));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: \tThe chars written are "G"%X"RST"\n", -1));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Hexadecimal lowercase: "Y"[%x]"RST"\n", n));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Hexadecimal lowercase: "G"[%x]"RST"\n", n));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Hexadecimal uppercase: "Y"[%X]"RST"\n", n));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Hexadecimal uppercase: "G"[%X]"RST"\n", n));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Padded lowercase: "Y"[%010x]"RST"\n", n));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Padded lowercase: "G"[%010x]"RST"\n", n));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Zero-padded uppercase: "Y"[%020X]"RST"\n", n));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Zero-padded uppercase: "G"[%020X]"RST"\n", n));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Precision lowercase: "Y"[%.*x]"RST"\n", 5, n));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Precision lowercase: "G"[%.*x]"RST"\n", 5, n));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Precision uppercase: "Y"[%.*X]"RST"\n", 8, n));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Precision uppercase: "G"[%.*X]"RST"\n", 8, n));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Left-justified lowercase: "Y"[%-15x]"RST"\n", n));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Left-justified lowercase: "G"[%-15x]"RST"\n", n));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Left-justified uppercase: "Y"[%-15X]"RST"\n", n));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Left-justified uppercase: "G"[%-15X]"RST"\n", n));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Alternate form lowercase: "Y"[%#x]"RST"\n", n));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Alternate form lowercase: "G"[%#x]"RST"\n", n));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Alternate form uppercase: "Y"[%#X]"RST"\n", n));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Alternate form uppercase: "G"[%#X]"RST"\n", n));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Zero value lowercase: "Y"[%x]"RST"\n", 0));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Zero value lowercase: "G"[%x]"RST"\n", 0));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Zero value uppercase: "Y"[%X]"RST"\n", 0));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Zero value uppercase: "G"[%X]"RST"\n", 0));
+//	printf(Y"\t\t^%d bytes written\n", printf("___printf: Large value lowercase: [%x]\n", 4294967295));
+	ft_printf("On next call original func doesnt get the argument long, so doesn't work with that command!\n");
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Large value lowercase [%%x->lx]: "G"[%x]"RST"\n", 4294967295));
+//	printf(Y"\t\t^%d bytes written\n", printf("___printf: Large value uppercase: [%X]\n", 4294967295));
+	ft_printf("On next call original func doesnt get the argument long, so doesn't work with that command!\n");
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: tLarge value uppercase [%%X->lX]: [%X]\n", 4294967295));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Negative value lowercase: "Y"[%x]"RST"\n", -42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Negative value lowercase: "G"[%x]"RST"\n", -42));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: Negative value uppercase: "Y"[%X]"RST"\n", -42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: Negative value uppercase: "G"[%X]"RST"\n", -42));
+}
+
+void	test_u()
+{
+	ft_printf(R"************************* U I N T \tT E S T S *************************\n"RST);
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a uint "Y"[%-10.3u]"RST"\n", 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a uint "G"[%-10.3u]"RST"\n", 42));
+//	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a uint [%- 10.7u]\n", 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: flag ' ' results in undefined behavior with 'u' conversion specifier [%%--> 10.7u]\n \tThis is a uint "G"[%- 10.7u]"RST"\n", 42));
+//	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a uint [% 010.7u]\n", 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf:  flag ' ' results in undefined behavior with 'u' conversion specifier [%%--> 010.7u]\n\tThis is a uint "G"[% 010.7u]"RST"\n", 42));
+//	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a uint [%+-10.7u]\n", 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: flag '+' results in undefined behavior with 'u' conversion specifier[%%->+-10.7u]\n\tThis is a uint "G"[%+-10.7u]"RST"\n", 42));
+//	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a uint [%- 10.*u]\n", 1<<12, 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: flag ' ' results in undefined behavior with 'u' conversion specifier[%%--> 10.*u]\n\tThis is a uint "G"[%- 10.*u]"RST"\n", 1<<12, 42));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a uint "Y"[%0.*u]"RST"\n", 1<<8, 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a uint "G"[%0.*u]"RST"\n", 1<<8, 42));
+}
+
+void	test_o()
+{
+	ft_printf(R"************************* O C T \tT E S T S *************************\n"RST);
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a uint "Y"[%-10.3o]"RST"\n", 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a uint "G"[%-10.3o]"RST"\n", 42));
+//	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a uint "Y"[%- 10.7o]\n", 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: flag ' ' results in undefined behavior with 'o' conversion specifier [%%--> 10.7o]\n\tThis is a uint "G"[%- 10.7o]"RST"\n", 42));
+//	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a uint "Y"[% 010.7o]\n", 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: flag ' ' results in undefined behavior with 'o' conversion specifier [%%-> 010.7o]\n\tThis is a uint "G"[% 010.7o]"RST"\n", 42));
+//	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a uint "Y"[%+-10.7o]\n", 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: flag '+' results in undefined behavior with 'o' conversion specifier [%%->+-10.7o]\n\tThis is a uint "G"[%+-10.7o]"RST"\n", 42));
+//	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a uint "Y"[%- 10.*o]\n", 1<<12, 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: flag ' ' results in undefined behavior with 'o' conversion specifier [%%--> 10.*o]\n\tThis is a uint "G"[%- 10.*o]"RST"\n", 1<<12, 42));
+	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a uint "Y"[%0.*o]"RST"\n", 1<<8, 42));
+	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a uint "G"[%0.*o]"RST"\n", 1<<8, 42));
+}
+#include <string.h>
 int	main(int ac, char **av)
 {
-	if (ac > 1)
-	{
-		if (av[1] == "run tests")
-		{
-			test_char();
-			test_str();
-		}
-		else 
-		{
-			TEST("YOUR INPUT: %s\n", av[1]);
-		}
-	}
-	else
-		return (1);
-}
-
     char			*name = "Andrey";
     unsigned int	date =  28;
     int				month = 3;
@@ -72,59 +263,52 @@ int	main(int ac, char **av)
 	int				age = 35;
 	float			age_f = 35.03;
 	int				age_int = (int)age_f;
-    int				i = -1;
-	int				count;
 	char			*str = NULL;
-	char			*ptr = name; 
-//	char null_char = '\0';
-
-	count = printf("printf: \t%x\n", INT_MIN);
-    count = ft_printf("ft_printf: \t%x\n\n", INT_MIN);
-	
-	printf ("printf: \tDecimals: %d %ld\n", 1977, 650000L);
-	ft_printf ("ft_printf: \tDecimals: %d %ld\n\n", 1977, 650000L);
-	printf ("printf: \tPreceding with blanks: %10d \n", 1977);
-	ft_printf ("ft_printf: \tPreceding with blanks: %10d \n\n", 1977);
-	printf ("printf: \tPreceding with zeros: %010d \n", 1977);
-	ft_printf ("ft_printf: \tPreceding with zeros: %010d \n\n", 1977);
-	printf ("printf: \tSome different radices: %d %x %o %#x %#o \n", 100, 100, 100, 100, 100);
-	ft_printf ("ft_printf: \tSome different radices: %d %x %o %#x %#o \n\n", 100, 100, 100, 100, 100);
-	printf ("printf: \tfloats: %4.2f %+.0e %E \n", 3.1416, 3.1416, 3.1416);
-	ft_printf ("ft_printf: \tfloats: %4.2f %+.0e %E \n\n", 3.1416, 3.1416, 3.1416);
-	printf ("printf: \tWidth trick: %*d \n", 5, 10);
-	ft_printf ("ft_printf: \tWidth trick: %*d \n\n", 5, 10);
-	printf ("printf: \t%s \n", "A string");
-	ft_printf ("ft_printf: \t%s \n\n", "A string");
-	printf("printf NULL %s\n", str);
-    ft_printf("ft_printf NULL %s\n\n", str);
-	printf("printf ptr NULL %p\n", str);
-    ft_printf("ft_printf ptr NULL %p\n\n", str);
-	printf("printf ptr \t%p\n", ptr);
-    ft_printf("ft_printf ptr \t%p\n\n", ptr);
-	printf("printf c: \t%c\n", 99);
-	ft_printf("ft_printf c: \t%c\n\n", 99);
-	printf("printf  \tINT_MIN : \t%d\tINT_MAX : \t%d\n", INT_MIN, INT_MAX);
-	ft_printf("ft_printf \tINT_MIN : \t%d\tINT_MAX : \t%d\n\n", INT_MIN, INT_MAX);
-	printf("printf :\tage_int(35.03) = %d\n", age_int);
-	ft_printf("ft_printf :\tage_int(35.03) = %d\n\n", age_int);
-	printf("printf :\tHello, \t%s, you are born @ %u.%o.%d, which means you are %f years old \
-or %e%% of 100. (unexpected null!) %s It also is equal to %X or %x in \"hexadecimal\"\n", name, date, month, year, age_f, age_f, str, (int)age_f, (int)age_f);
-	ft_printf("ft_printf:\tHello, \t%s, you are born @ %u.%o.%d, which means you are %d \
-years old or %d%% of 100. (unexpected null!) %s It also is equal to %X or %x in \"hexadecimal\"\n\n", name, date, month, year, age, age, str, (int)age_f, (int)age_f);
-	printf("printf: \tHello, %s, today is %d, in hex is %x or %X, char ->%c\n", "friend", 27, 27, 27, 'R');
-	ft_printf("ft_printf: \tHello, %s, today is %d, in hex is %x or %X, char ->%c\n\n", "friend", 27, 27, 27, 'R');
-	printf("printf :\t");
-	while (i++ < 100)
-		printf("%d ", i);
-	printf ("\n");
-	i = -1;
-	ft_printf("ft_printf :\t");
-	while (i++ < 100)
-		ft_printf("%d ", i);
-    printf ("\n\n");
-
-	printf("printf: \tThe chars written are %X\n", -1);
-	ft_printf("ft_printf: \tThe chars written are %X\n\n", -1);
-//	count = (printf(stderr, "%s\n", explain_malloc(size));
-//	ft_printf("Malloc size error = %d\n", count);
+	if (ac > 1)
+	{
+		char *test;
+		test = av[1];
+		if (!strcmp(test, "tests"))
+		{
+			test_char();
+			ft_printf("\v");
+			test_str();
+			ft_printf("\v");
+			test_int();
+			ft_printf("\v");
+			test_ptr();
+			ft_printf("\v");
+			test_X_x();
+			ft_printf("\v");
+			test_u();
+			ft_printf("\v");
+			test_o();
+			ft_printf("\v");
+			ft_printf("ft_printf: Hello, \t%s, you are born @ %u.%o.%d, which means you are %f years old \
+or %e%% of 100. (unexpected null!) %s It also is equal to %X or %x in \"hexadecimal\"\n", name, date, month, year, age, age_f, str, age_int, (int)age_f);
+			ft_printf("ft_printf: Hello, %s, today is %d, in hex is %x or %X, char ->%c\n", "friend", 27, 27, 27, 'R');
+		}
+		else if (!strcmp(test, "test_char"))
+			test_char();
+		else if (!strcmp(test, "test_str"))
+			test_str();
+		else if (!strcmp(test, "test_int"))
+			test_int();
+		else if (!strcmp(test, "test_ptr"))
+			test_ptr();
+		else if (!strcmp(test, "test_hex"))
+			test_X_x();
+		else if (!strcmp(test, "test_u"))
+			test_u();
+		else if (!strcmp(test, "test_o"))
+			test_o();
+		else 
+		{
+			printf("___printf:\n\tYOUR INPUT: %s\n", test);
+			ft_printf("ft_printf:\n\tYOUR INPUT: %s\n", test);
+		}
+	}
+	else
+		return (1);
 }
+

@@ -6,37 +6,38 @@
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 14:06:49 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/13 15:21:16 by apirusov         ###   ########.fr       */
+/*   Updated: 2024/04/16 17:18:08 by apirusov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-int ft_atoi(const char *str)
+void	itoa_base(t_data *data, onion int_val)
 {
-    int i;
-    int sign;
-    int nb;
+	onion	temp;
 
-    i = 0;
-    sign = 1;
-    nb = 0;
-    while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
-        i++;
-    if (str[i] == '-' || str[i] == '+')
-    {
-        if (str[i] == '-')
-            sign = -1;
-        i++;
-    }
-    while (str[i] && (str[i] >= '0' && str[i] <= '9'))
-    {
-        if (nb == 214748364 && str[i] == '8' && sign == -1)
-            return (-2147483648);
-        nb = nb * 10 + str[i] - '0';
-        i++;
-    }
-    return (nb * sign);
+	if (data->fmt.base < 2 || data->fmt.base > 16)
+		return ;
+	if (data->fmt.is_negative && !data->fmt.is_converted)
+	{
+		int_val.int64 = -(int_val.int64);
+		data->fmt.is_converted = true;
+		itoa_base(data, int_val);
+	}
+	else if (int_val.uint64 < data->fmt.base)
+	{
+		if (data->fmt.upper_case)
+			data->fmt.buf_tmp[data->fmt.num_len++] = UP_BASE[int_val.uint64];
+		else
+			data->fmt.buf_tmp[data->fmt.num_len++] = LOW_BASE[int_val.uint64];
+	}
+	else
+	{
+		temp.uint64 = int_val.uint64 / data->fmt.base;
+		itoa_base(data, temp);
+		temp.uint64 = int_val.uint64 % data->fmt.base;
+		itoa_base(data, temp);
+	}
 }
 
 bool	inside(const char *s, char c)
@@ -46,26 +47,30 @@ bool	inside(const char *s, char c)
 	while (*s)
 	{
 		if (*s == c)
-			return true;
+			return (true);
 		s++;
 	}
 	return (false);
 }
 
-void    *ft_memset(void *s, int c, size_t n)
+void	*ft_memset(void *s, int c, size_t n)
 {
-    size_t          i;
-    unsigned char   *ptr;
+	size_t			i;
+	unsigned char	*ptr;
 
-    i = 0;
-    ptr = (unsigned char *)s;
-    while (i < n)
-        ptr[i++] = c;
-    return (s);
+	i = 0;
+	ptr = (unsigned char *)s;
+	while (i < n)
+		ptr[i++] = c;
+	return (s);
 }
 
-void    *ft_bzero(void *s, size_t n)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-    return (ft_memset(s, '\0', n));
-}
+	int	i;
 
+	i = 0;
+	while (s1[i] != '\0' && (s1[i] == s2[i]))
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}

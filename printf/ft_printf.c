@@ -6,7 +6,7 @@
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 18:59:27 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/13 15:21:34 by apirusov         ###   ########.fr       */
+/*   Updated: 2024/04/16 17:45:23 by apirusov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 /*
@@ -92,112 +92,84 @@ EXAMPLE
 
        Will print "Number of bananas in my pocket: 42", without a newline.
 */
-# include <errno.h>
-# include <limits.h>
-# include <locale.h>
-//# include <libexplain/malloc.h>
-# include <stdarg.h>
-# include <stdbool.h>
-//# include <stderr.h>
-# include <stdint.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <wchar.h>
+#include <errno.h>
+#include <limits.h>
+#include <locale.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <wchar.h>
+#include "libftprintf.h"
 
-void	render_format(t_data *data)
+void	render_format(t_data *data, char specifier)
 {
-	char specifier;
-	
-	specifier = data->format.specifier;
+	onion	int_val;
+
+	int_val.int64 = 0;
 	if (specifier == '%')
 		print_char(data, '%');
 	else if (specifier == 'c')
 		print_char(data, va_arg(data->ap, int));
 	else if (specifier == 's')
 		print_str(data, va_arg(data->ap, char *));
-	//"dipxXu" -->
 	if (inside("dioupxXu", specifier))
 	{
-		// di -> signed int -> long
-		// p -> void * unsigned long
-		// xXuo -> unsigned int -> long 
-		// fetch the data from va_arg
 		if (inside("di", specifier))
-			??? = (long)va_arg(data->ap, int);
+		{
+			int_val.int64 = (long)va_arg(data->ap, int);
+			data->fmt.signed_value = true;
+			if (int_val.int64 < 0)
+				data->fmt.is_negative = true;
+		}
 		else if (specifier == 'p')
-			??? = (unsigned long)va_arg(data->ap, void *);
-		print_digit(data, va_arg(data->ap, int));
-
-		// Call one! function for 'em all!
-		print_digit
+			int_val.uint64 = (unsigned long)va_arg(data->ap, void *);
+		else if (inside("xXuo", specifier))
+			int_val.uint64 = (unsigned long)va_arg(data->ap, unsigned int);
+		print_digit(data, int_val);
 	}
-		
-
-
-	/*count = 0;
-	if (data->format.specifier == '%')
-		count += print_char(data, '%');
-	else if (data->format.specifier == 'c')
-		count += print_char(va_arg(data->ap, int));
-	else if (data->format.specifier == 's')
-		count += print_str(va_arg(data->ap, char *));
-	else if (data->format.specifier == 'd')
-		count += print_digit((long)(va_arg(data->ap, int)), 10, "0123456789");
-	else if (data->format.specifier == 'u')
-		count += print_digit((long)(va_arg(data->ap, unsigned int)), 10, "0123456789");
-	else if (data->format.specifier == 'o')
-		count += print_digit((long)(va_arg(data->ap, unsigned int)), 8, "01234567");
-	else if (data->format.specifier == 'x')
-		count += print_digit((long)(va_arg(data->ap, unsigned int)), 16, "0123456789abcdef");
-	else if (data->format.specifier == 'X')
-		count += print_digit((long)(va_arg(data->ap, unsigned int)), 16, "0123456789ABCDEF");
-	else
-		count += write(1, &data->format.specifier, 1);
-	data->chars_written += count;*/
 }
 
-%[flags][width][.precision][length]specifier
 static int	init_data(t_data *data, const char *format)
 {
 	data->chars_written = 0;
-	data->s = format; //copy pointer of format string into data s
+	data->s = format;
+//	data->fmt.width_val = 0;
+	data->fmt.space = 0;
+	data->fmt.plus = 0;
 	data->buf = (char *)malloc(BUF_SIZE * sizeof(char));
 	if (!data->buf)
 		return (MALLOC_ERROR);
-	data->buffer_index = 0;
-	ft_bzero(data->buf, BUF_SIZE * sizeof(char)); 
+	data->buf_index = 0;
+	ft_memset(data->buf, '\0', BUF_SIZE * sizeof(char));
 	return (OK);
 }
 
 int	ft_printf(const char *format, ...)
 {
 	t_data	data;
-	va_list	args;
-	int		count;
 
-	va_start(data.ap, format); // we kick the data from format in a data structure
-	if (init_data(&data, format)) // implicit declaration of a function
+	va_start(data.ap, format);
+	if (init_data(&data, format))
 		return (MALLOC_ERROR);
 	while (*data.s)
 	{
-		if (*data.s == '%' && *(data.s++) != '%')
+		if (*data.s == '%' && *(++data.s))
 		{
-			if (get_format(&data)) // get_format is successfull if returns 0
+			if (get_format(&data))
 				return (PARSE_ERROR);
-			render_format(&data);
+			render_format(&data, (char)data.fmt.specifier);
 		}
 		else
 		{
-//			data.buf[data.buf_index++] = *data.s;
 			write_buf(&data, *data.s);
 		}
 		data.s++;
 	}
-	print_res(&data);
+	flush_buf(&data);
 	va_end(data.ap);
 	free(data.buf);
 	return (data.chars_written);
 }
-
-
