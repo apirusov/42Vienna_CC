@@ -10,26 +10,27 @@
 
 # define FTPRINTF ft_printf
 # define PRINTF printf
-# define TEST(fmt, ...) FTPRINTF("ft_printf:\n^ %d bytes written\n",  
-		FTPRINTF(fmt\n, ##__VA_ARGS__)) FTPRINTF("\n") \
-		PRINTF("printf:\n^ %d bytes written\n", 
-		PRINTF(fmt\n\n, ##__VA_ARGS__)) PRINTF("\n\n")
+# define TEST(fmt, ...) ({FTPRINTF("ft_printf:\n^ %d bytes written\n", \
+		FTPRINTF(fmt, ##__VA_ARGS__)); \
+		FTPRINTF("\n"); \
+		PRINTF("printf:\n^ %d bytes written\n", PRINTF(fmt, ##__VA_ARGS__)); \
+		PRINTF("\n\n");})
 
 void    test_char()
 {
-	TEST("This is a char "Y"[%-*%]"RST"\n", n);
+	TEST("This is a char [%-*%]\n", n);
 	TEST("c: \t%c\n", 99);
 	TEST("%%\n");
 	TEST("Characters: %c %c \n\n", 'a', 65);
-    TEST("This is a char: "Y"[%c]"RST"\n", 'A');
-	TEST("This is a char: "G"[%c]"RST"\n", 'A');
-	TEST("This is a char: "Y"[%10c]"RST"\n", 'A');
-	TEST("This is a char: "G"[%10c]"RST"\n", 'A');
-	TEST("This is a char: "Y"[%-10c]"RST"\n", 'A');
-	TEST("This is a char: "G"[%-10c]"RST"\n", 'A');
+    TEST("This is a char: [%c]\n", 'A');
+	TEST("This is a char: [%c]\n", 'A');
+	TEST("This is a char: [%10c]\n", 'A');
+	TEST("This is a char: [%10c]\n", 'A');
+	TEST("This is a char: [%-10c]\n", 'A');
+	TEST("This is a char: [%-10c]\n", 'A');
 	int	n = 10;
-	TEST("This is a char: "Y"[%-*c]"RST"\n", n, 'A');
-	TEST("This is a char: "G"[%-*c]"RST"\n", n, 'A');
+	TEST("This is a char: \"Y\"[%-*c]\"RST\"\n", n, 'A');
+	TEST("This is a char: \"G\"[%-*c]\"RST\"\n", n, 'A');
 }
 
 void test_str()
@@ -38,11 +39,11 @@ void test_str()
 	TEST("string null: %s\n", null);
 	TEST("\t%s \n\n", "A string");
 	char *s = "Special Beam Cannon";
-	TEST("This is a string: "G"[%s]"RST"\n", s);
-	TEST("This is a string: "G"[%10s]"RST"\n", s);
-	TEST("This is a string: "G"[%10.3s]"RST"\n", s);
-	TEST("This is a string: "G"[%-10.3s]"RST"\n", s);
-	TEST("This is a string: "G"[%*.*s]"RST"\n", 10, s);
+	TEST("This is a string: 'G'[%s]'RST'\n", s);
+	TEST("This is a string: 'G'[%10s]'RST'\n", s);
+	TEST("This is a string: 'G'[%10.3s]'RST'\n", s);
+	TEST("This is a string: 'G'[%-10.3s]'RST'\n", s);
+	TEST("This is a string: 'G'[%*.*s]'RST'\n", 10, s);
 }
 
 void test_int()
@@ -53,36 +54,36 @@ void test_int()
 	TEST("\tPreceding with zeros: %010d \n", 1977);
 	TEST("\tSome different radices: %d %x %o %#x %#o \n\n", 100, 100, 100, 100, 100);
 	TEST("\tWidth trick: %*d \n\n", 5, 10);
-	TEST("This is a int "G"[%i]"RST"\n", INT_MIN);
-	TEST("This is a int "G"[%i]"RST"\n", INT_MIN);
-	TEST("This is a int "G"[%d]"RST"\n", 42);
-	TEST("This is a int "G"[%10d]"RST"\n", 42);
-	TEST("This is a int "G"[%-10d]"RST"\n", 42);
-	TEST("This is a int "G"[%-+10d]"RST"\n", 42);
-	TEST("This is a int "G"[% 10d]"RST"\n", 42);
-	TEST("This is a int "G"[%1d]"RST"\n", 42);
-	TEST("This is a int "G"[%-10.3d]"RST"\n", 42);
-	TEST("This is a int "G"[%- 10.7d]"RST"\n", 42);
-	TEST("This is a int "G"[% 010.7d]"RST"\n", 42);
-	TEST("This is a int "G"[%+-10.7d]"RST"\n", 42);
-	TEST("This is a int "G"[%- 10.*d]"RST"\n", 1<<12, 42);
-	TEST("This is a int "G"[%0.*d]"RST"\n", 1<<8, 42);
-	TEST("Crazy: "G"[%-+10.4d]"RST"\n", 12345);
-	TEST("Crazy: "G"[%010.8d]"RST"\n", 9876);
-	TEST("Crazy: "G"[%-+*.*d]"RST"\n", 6, 3, 123);
-	TEST("Crazy: "G"[%0*.*d]"RST"\n", 1<<5, 2, 42);
-	TEST("Crazy: "G"[%0*.*d]"RST"\n", 5, 2, 42);
-	TEST("Crazy: "G"[%-+10.5d]"RST"\n", 987654);
-	TEST("Crazy: "G"[%*.*d]"RST"\n", 8, 1<<10, 123);
-	TEST("Crazy: "G"[%*.*d]"RST"\n", 100, 50, 12345);
-	TEST("Crazy: "G"[%-+0*.*d]"RST"\n", 1<<7, 3, 987);
-	TEST("Crazy: "G"[%-1000.500d]"RST"\n", 87654);
-	TEST("Crazy: "G"[%*.*d]"RST"\n", 15, 1<<11, 98765);
-	TEST("Crazy: "G"[%-+01000.500d]"RST"\n", 123456);
-	TEST("Crazy: "G"[%0*.*d]"RST"\n", 1<<6, 3, 42);
-	TEST("Crazy: "G"[%-+*.*d]"RST"\n", 1<<8, 2, 9876);
-	TEST("Max int: "G"[%d]"RST"\n", INT_MAX);
-	TEST("Min int: "G"[%d]"RST"\n", INT_MIN);
+	TEST("This is a int [%i]\"RST\"\n", INT_MIN);
+	TEST("This is a int [%i]\"RST\"\n", INT_MIN);
+	TEST("This is a int [%d]\n", 42);
+	TEST("This is a int [%10d]\n", 42);
+	TEST("This is a int [%-10d]\n", 42);
+	TEST("This is a int [%-+10d]\n", 42);
+	TEST("This is a int [% 10d]\n", 42);
+	TEST("This is a int [%1d]\n", 42);
+	TEST("This is a int [%-10.3d]\n", 42);
+	TEST("This is a int [%- 10.7d]\n", 42);
+	TEST("This is a int [% 010.7d]\n", 42);
+	TEST("This is a int [%+-10.7d]\n", 42);
+	TEST("This is a int [%- 10.*d]\n", 1<<12, 42);
+	TEST("This is a int [%0.*d]\n", 1<<8, 42);
+	TEST("Crazy: [%-+10.4d]\n", 12345);
+	TEST("Crazy: [%010.8d]\n", 9876);
+	TEST("Crazy: [%-+*.*d]\n", 6, 3, 123);
+	TEST("Crazy: [%0*.*d]\n", 1<<5, 2, 42);
+	TEST("Crazy: [%0*.*d]\n", 5, 2, 42);
+	TEST("Crazy: [%-+10.5d]\n", 987654);
+	TEST("Crazy: [%*.*d]\n", 8, 1<<10, 123);
+	TEST("Crazy: [%*.*d]\n", 100, 50, 12345);
+	TEST("Crazy: [%-+0*.*d]\n", 1<<7, 3, 987);
+	TEST("Crazy: [%-1000.500d]\n", 87654);
+	TEST("Crazy: [%*.*d]\n", 15, 1<<11, 98765);
+	TEST("Crazy: [%-+01000.500d]\n", 123456);
+	TEST("Crazy: [%0*.*d]\n", 1<<6, 3, 42);
+	TEST("Crazy: [%-+*.*d]\n", 1<<8, 2, 9876);
+	TEST("Max int: [%d]\n", INT_MAX);
+	TEST("Min int: [%d]\n", INT_MIN);
 }
 
 void	test_ptr()
@@ -90,54 +91,54 @@ void	test_ptr()
 	int n = 42;
 	char *str = NULL;
 	TEST("ptr NULL %p\n", str);
-	TEST("Basic pointer: "G"[%p]"RST"\n", &n);
-	TEST("Width of 20: "G"[%20p]"RST"\n", &n);
-	TEST("Left-justified with width of 15: "G"[%-15p]"RST"\n", &n);
-	TEST("Alternate form: "G"[%#p]"RST"\n", &n);
-	TEST("Crazy combination: "G"[%#-20p]"RST"\n", &n);
-	TEST("Precision and width: "G"[%15.8p]"RST"\n", &n);
+	TEST("Basic pointer: [%p]\n", &n);
+	TEST("Width of 20: [%20p]\n", &n);
+	TEST("Left-justified with width of 15: [%-15p]\n", &n);
+	TEST("Alternate form: [%#p]\n", &n);
+	TEST("Crazy combination: [%#-20p]\n", &n);
+	TEST("Precision and width: [%15.8p]\n", &n);
 }
 
 void test_X_x()
 {
 	int n = 255;
 	TEST("\tThe chars written are %X\n", -1);
-	TEST("Hexadecimal lowercase: "G"[%x]"RST"\n", n);
-	TEST("Hexadecimal uppercase: "G"[%X]"RST"\n", n);
-	TEST("Padded lowercase: "G"[%010x]"RST"\n", n);
-	TEST("Zero-padded uppercase: "G"[%020X]"RST"\n", n);
-	TEST("Precision lowercase: "G"[%.*x]"RST"\n", 5, n);
-	TEST("Precision uppercase: "G"[%.*X]"RST"\n", 8, n);
-	TEST("Left-justified lowercase: "G"[%-15x]"RST"\n", n);
-	TEST("Left-justified uppercase: "G"[%-15X]"RST"\n", n);
-	TEST("Alternate form lowercase: "G"[%#x]"RST"\n", n);
-	TEST("Alternate form uppercase: "G"[%#X]"RST"\n", n);
-	TEST("Zero value lowercase: "G"[%x]"RST"\n", 0);
-	TEST("Zero value uppercase: "G"[%X]"RST"\n", 0);
-	TEST("Large value lowercase: "G"[%x]"RST"\n", 4294967295);
-	TEST("Large value uppercase: "G"[%X]"RST"\n", 4294967295);
-	TEST("Negative value lowercase: "G"[%x]"RST"\n", -42);
-	TEST("Negative value uppercase: "G"[%X]"RST"\n", -42);
+	TEST("Hexadecimal lowercase: [%x]\n", n);
+	TEST("Hexadecimal uppercase: [%X]\n", n);
+	TEST("Padded lowercase: [%010x]\n", n);
+	TEST("Zero-padded uppercase: [%020X]\n", n);
+	TEST("Precision lowercase: [%.*x]\n", 5, n);
+	TEST("Precision uppercase: [%.*X]\n", 8, n);
+	TEST("Left-justified lowercase: [%-15x]\n", n);
+	TEST("Left-justified uppercase: [%-15X]\n", n);
+	TEST("Alternate form lowercase: [%#x]\n", n);
+	TEST("Alternate form uppercase: [%#X]\n", n);
+	TEST("Zero value lowercase: [%x]\n", 0);
+	TEST("Zero value uppercase: [%X]\n", 0);
+	TEST("Large value lowercase: [%x]\n", 4294967295);
+	TEST("Large value uppercase: [%X]\n", 4294967295);
+	TEST("Negative value lowercase: [%x]\n", -42);
+	TEST("Negative value uppercase: [%X]\n", -42);
 }
 
 void	test_u()
 {
-	TEST("This is a uint "G"[%-10.3u]"RST"\n", 42);
-    TEST("This is a uint "G"[%- 10.7u]"RST"\n", 42);
-	TEST("This is a uint "G"[% 010.7u]"RST"\n", 42);
-	TEST("This is a uint "G"[%+-10.7u]"RST"\n", 42);
-	TEST("This is a uint "G"[%- 10.*u]"RST"\n", 1<<12, 42);
-	TEST("This is a uint "G"[%0.*u]"RST"\n", 1<<8, 42);
+	TEST("This is a uint [%-10.3u]\n", 42);
+    TEST("This is a uint [%- 10.7u]\n", 42);
+	TEST("This is a uint [% 010.7u]\n", 42);
+	TEST("This is a uint [%+-10.7u]\n", 42);
+	TEST("This is a uint [%- 10.*u]\n", 1<<12, 42);
+	TEST("This is a uint [%0.*u]\n", 1<<8, 42);
 }
 
 void	test_o()
 {
-	TEST("This is a uint "G"[%-10.3o]"RST"\n", 42);
-    TEST("This is a uint "G"[%- 10.7o]"RST"\n", 42);
-	TEST("This is a uint "G"[% 010.7o]"RST"\n", 42);
-	TEST("This is a uint "G"[%+-10.7o]"RST"\n", 42);
-	TEST("This is a uint "G"[%- 10.*o]"RST"\n", 1<<12, 42);
-	TEST("This is a uint "G"[%0.*o]"RST"\n", 1<<8, 42);
+	TEST("This is a uint [%-10.3o]\n", 42);
+    TEST("This is a uint [%- 10.7o]\n", 42);
+	TEST("This is a uint [% 010.7o]\n", 42);
+	TEST("This is a uint [%+-10.7o]\n", 42);
+	TEST("This is a uint [%- 10.*o]\n", 1<<12, 42);
+	TEST("This is a uint [%0.*o]\n", 1<<8, 42);
 }
 
 int	main(int ac, char **av)
