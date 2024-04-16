@@ -19,7 +19,7 @@
 
 void    test_char()
 {
-	ft_printf(R"************************* C H A R \tT E S T S *************************\n"RST);
+	printf(R"************************* C H A R \tT E S T S *************************\n"RST);
 	int n = 10;
 	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a char "Y"[%-*%]"RST"\n", n));
 	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a char "G"[%-*%]"RST"\n", n)); // make ignore flags if %%
@@ -41,7 +41,7 @@ void    test_char()
 
 void test_str()
 {
-	ft_printf(R"************************* S T R \tT E S T S *************************\n"RST);
+	printf(R"************************* S T R \tT E S T S *************************\n"RST);
 	char *null = NULL;
 	printf(Y"\t\t^%d bytes written\n", printf("___printf: string null: "Y"%s"RST"\n", null));
 	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: string null: "G"%s"RST"\n", null));
@@ -77,7 +77,7 @@ void test_str()
 
 void test_int()
 {
-	ft_printf(R"************************* I N T \tT E S T S *************************\n"RST);
+	printf(R"************************* I N T \tT E S T S *************************\n"RST);
 	printf(Y"\t\t^%d bytes written\n", printf("___printf: \t"Y"%x"RST"\n", INT_MIN));
 	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: \t"G"%x"RST"\n", INT_MIN));
 	//printf(Y"\t\t^%d bytes written\n", printf("___printf: \tDecimals: %d %ld\n", 1977, 650000L));
@@ -154,7 +154,7 @@ void test_int()
 
 void	test_ptr()
 {
-	ft_printf(R"************************* P T R \tT E S T S *************************\n"RST);
+	printf(R"************************* P T R \tT E S T S *************************\n"RST);
 	int n = 42;
 	char *str = NULL;
 	char *name = "Andrey";
@@ -180,7 +180,7 @@ void	test_ptr()
 
 void test_X_x()
 {
-	ft_printf(R"************************* H E X \tT E S T S *************************\n"RST);
+	printf(R"************************* H E X \tT E S T S *************************\n"RST);
 	int n = 255;
 	printf(Y"\t\t^%d bytes written\n", printf("___printf: \tThe chars written are "Y"%X"RST"\n", -1));
 	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: \tThe chars written are "G"%X"RST"\n", -1));
@@ -222,7 +222,7 @@ void test_X_x()
 
 void	test_u()
 {
-	ft_printf(R"************************* U I N T \tT E S T S *************************\n"RST);
+	printf(R"************************* U I N T \tT E S T S *************************\n"RST);
 	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a uint "Y"[%-10.3u]"RST"\n", 42));
 	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a uint "G"[%-10.3u]"RST"\n", 42));
 //	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a uint [%- 10.7u]\n", 42));
@@ -239,7 +239,7 @@ void	test_u()
 
 void	test_o()
 {
-	ft_printf(R"************************* O C T \tT E S T S *************************\n"RST);
+	printf(R"************************* O C T \tT E S T S *************************\n"RST);
 	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a uint "Y"[%-10.3o]"RST"\n", 42));
 	printf(G"\t\t^%d bytes written\n", ft_printf("ft_printf: This is a uint "G"[%-10.3o]"RST"\n", 42));
 //	printf(Y"\t\t^%d bytes written\n", printf("___printf: This is a uint "Y"[%- 10.7o]\n", 42));

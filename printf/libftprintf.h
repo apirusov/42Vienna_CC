@@ -64,7 +64,7 @@ typedef struct s_format
 	int		prec_val;
 	e_base	base;
 	size_t	padding_spaces;
-	size_t	padding_zeros;
+	int		padding_zeros;
 	bool	signed_value;
 	bool	is_negative;
 	bool	is_converted;
