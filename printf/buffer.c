@@ -6,12 +6,11 @@
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:39:13 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/16 17:38:40 by apirusov         ###   ########.fr       */
+/*   Updated: 2024/04/19 12:12:42 by apirusov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
-#include <stdbool.h>
+#include "printf.h"
 
 void	flush_buf(t_data *data)
 {
@@ -37,8 +36,8 @@ void	putchar_buf_n(char c, int precision, t_data *data)
 
 void	putstr_buf_n(char *s, int precision, t_data *data)
 {
-	if (precision <= 0)
+	if (precision < 0)
 		return ;
-	while (precision-- && *s)
+	while (precision-- > 0 && *s)
 		write_buf(data, *s++);
 }

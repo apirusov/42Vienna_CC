@@ -6,9 +6,10 @@
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 18:59:27 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/16 17:45:23 by apirusov         ###   ########.fr       */
+/*   Updated: 2024/04/19 13:57:32 by apirusov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 /*
 NAME
        printf - display text according to a format string
@@ -92,23 +93,14 @@ EXAMPLE
 
        Will print "Number of bananas in my pocket: 42", without a newline.
 */
-#include <errno.h>
-#include <limits.h>
-#include <locale.h>
-#include <stdarg.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <wchar.h>
-#include "libftprintf.h"
 
-void	render_format(t_data *data, char specifier)
+#include "ft_printf.h"
+
+static void	render_format(t_data *data, char specifier)
 {
-	onion	int_val;
+	long int	int_val;
 
-	int_val.int64 = 0;
+	int_val = 0;
 	if (specifier == '%')
 		print_char(data, '%');
 	else if (specifier == 'c')
@@ -119,26 +111,43 @@ void	render_format(t_data *data, char specifier)
 	{
 		if (inside("di", specifier))
 		{
-			int_val.int64 = (long)va_arg(data->ap, int);
+			int_val = (long)va_arg(data->ap, int);
 			data->fmt.signed_value = true;
-			if (int_val.int64 < 0)
+			if (int_val < 0)
 				data->fmt.is_negative = true;
 		}
 		else if (specifier == 'p')
-			int_val.uint64 = (unsigned long)va_arg(data->ap, void *);
+			int_val = (unsigned long int)va_arg(data->ap, void *);
 		else if (inside("xXuo", specifier))
-			int_val.uint64 = (unsigned long)va_arg(data->ap, unsigned int);
+			int_val = (unsigned long)va_arg(data->ap, unsigned int);
 		print_digit(data, int_val);
 	}
+}
+
+int	partial_init(t_data *data)
+{
+	data->fmt.space = false;
+	data->fmt.plus = false;
+	data->fmt.star = false;
+	data->fmt.left_just = false;
+	data->fmt.hash = false;
+	data->fmt.zero_pad = false;
+	data->fmt.specifier = 0;
+	data->fmt.width_val = 0;
+	data->fmt.prec_val = -1;
+	data->fmt.num_len = 0;
+	data->chars_written = 0;
+	data->fmt.padding_spaces = 0;
+	data->fmt.padding_zeros = 0;
+	return (OK);
 }
 
 static int	init_data(t_data *data, const char *format)
 {
 	data->chars_written = 0;
 	data->s = format;
-//	data->fmt.width_val = 0;
-	data->fmt.space = 0;
-	data->fmt.plus = 0;
+	data->fmt.space = false;
+	data->fmt.plus = false;
 	data->buf = (char *)malloc(BUF_SIZE * sizeof(char));
 	if (!data->buf)
 		return (MALLOC_ERROR);
@@ -151,6 +160,8 @@ int	ft_printf(const char *format, ...)
 {
 	t_data	data;
 
+	if (!format || !*format)
+		return (ERROR);
 	va_start(data.ap, format);
 	if (init_data(&data, format))
 		return (MALLOC_ERROR);
@@ -158,14 +169,13 @@ int	ft_printf(const char *format, ...)
 	{
 		if (*data.s == '%' && *(++data.s))
 		{
+			partial_init(&data);
 			if (get_format(&data))
 				return (PARSE_ERROR);
 			render_format(&data, (char)data.fmt.specifier);
 		}
 		else
-		{
 			write_buf(&data, *data.s);
-		}
 		data.s++;
 	}
 	flush_buf(&data);

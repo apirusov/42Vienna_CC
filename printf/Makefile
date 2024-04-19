@@ -13,16 +13,29 @@
 NAME = libftprintf.a
 
 SRCDIR = .
-SRC = ft_printf.c buffer.c utilities.c parse.c print_cs.c print_num.c ft_strlen.c main.c
+SRC = ft_printf.c \
+	buffer.c \
+	utilities.c \
+	parse.c \
+	print_cs.c \
+	print_num.c \
+	print_nil.c
 OBJS = $(SRC:.c=.o)
 HEAD = ./includes/
+BONUS =  ft_printf.c \
+	buffer.c \
+	utilities.c \
+	parse.c \
+	print_cs.c \
+	print_num.c \
+	print_nil.c
 
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -c
 AR = ar rcs
 RM = /bin/rm -f
 LIB = ranlib
-#BONUS_O= ${BONUS:.c=.o}
+BONUS_O= ${BONUS:.c=.o}
 
 all: ${NAME}
 
@@ -33,9 +46,10 @@ ${NAME}: ${OBJS}
 .c.o:
 	${CC} ${CFLAGS} $< -I ${HEAD} -o ${<:.c=.o}
 
-so:
-	$(CC) -nostartfiles -fPIC $(CFLAGS) $(SRC)
-	gcc -nostartfiles -shared -o libft.so $(OBJS)
+bonus: ${NAME} ${BONUS_O} ${OBJS}
+		${AR} ${NAME} ${BONUS_O}
+		${AR} ${NAME} ${OBJS}
+		${LIB} ${NAME}
 
 clean:
 	${RM} ${OBJS} ${BONUS_O}
@@ -45,4 +59,5 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re 
+rebonus: fclean bonus
+.PHONY: all clean fclean re bonus rebonus

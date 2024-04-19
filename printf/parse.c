@@ -6,11 +6,11 @@
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 13:49:09 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/16 17:18:48 by apirusov         ###   ########.fr       */
+/*   Updated: 2024/04/17 19:08:35 by apirusov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
 static int	atoi_printf(t_data *data)
 {
@@ -68,17 +68,17 @@ int	get_format(t_data *data)
 	{
 		data->fmt.specifier = *data->s;
 		if (inside("diu", data->fmt.specifier))
-			data->fmt.base = BASE_10;
+			data->fmt.base = 10;
 		else if (inside("xXp", data->fmt.specifier))
 		{
-			data->fmt.base = BASE_16;
+			data->fmt.base = 16;
 			if ('X' == data->fmt.specifier)
 				data->fmt.upper_case = true;
 		}
 		else if (*data->s == 'o')
-			data->fmt.base = BASE_8;
+			data->fmt.base = 8;
 		else if (*data->s == 'b')
-			data->fmt.base = BASE_2;
+			data->fmt.base = 2;
 	}
 	return (OK);
 }

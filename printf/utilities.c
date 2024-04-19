@@ -6,36 +6,36 @@
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 14:06:49 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/16 17:18:08 by apirusov         ###   ########.fr       */
+/*   Updated: 2024/04/19 13:57:12 by apirusov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
-void	itoa_base(t_data *data, onion int_val)
+void	itoa_base(t_data *data, unsigned int int_val)
 {
-	onion	temp;
+	unsigned int	temp;
 
 	if (data->fmt.base < 2 || data->fmt.base > 16)
 		return ;
 	if (data->fmt.is_negative && !data->fmt.is_converted)
 	{
-		int_val.int64 = -(int_val.int64);
+		int_val = -(int_val);
 		data->fmt.is_converted = true;
 		itoa_base(data, int_val);
 	}
-	else if (int_val.uint64 < data->fmt.base)
+	else if (int_val < data->fmt.base)
 	{
 		if (data->fmt.upper_case)
-			data->fmt.buf_tmp[data->fmt.num_len++] = UP_BASE[int_val.uint64];
+			data->fmt.buf_tmp[data->fmt.num_len++] = UP_BASE[int_val];
 		else
-			data->fmt.buf_tmp[data->fmt.num_len++] = LOW_BASE[int_val.uint64];
+			data->fmt.buf_tmp[data->fmt.num_len++] = LOW_BASE[int_val];
 	}
 	else
 	{
-		temp.uint64 = int_val.uint64 / data->fmt.base;
+		temp = int_val / data->fmt.base;
 		itoa_base(data, temp);
-		temp.uint64 = int_val.uint64 % data->fmt.base;
+		temp = int_val % data->fmt.base;
 		itoa_base(data, temp);
 	}
 }
@@ -73,4 +73,11 @@ int	ft_strcmp(const char *s1, const char *s2)
 	while (s1[i] != '\0' && (s1[i] == s2[i]))
 		i++;
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+
+size_t	ft_strlen(const char *s)
+{
+	if (s == NULL || !*s)
+		return (0);
+	return (ft_strlen(s + 1) + 1);
 }
