@@ -6,7 +6,7 @@
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:23:31 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/12 12:28:01 by apirusov         ###   ########.fr       */
+/*   Updated: 2024/04/23 20:14:31 by apirusov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 /*
@@ -40,11 +40,11 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	void	*ptr;
 
 	if (size == 0 && nmemb == 0)
-       {
-              ptr = (void *)malloc(0);
-              return (ptr);
-       }
-       if (nmemb > (SIZE_MAX / size))
+	{
+		ptr = (void *)malloc(0);
+		return (ptr);
+	}
+	if (nmemb > (SIZE_MAX / size))
 		return (NULL);
 	ptr = malloc(nmemb * size);
 	if (!ptr)

@@ -6,14 +6,12 @@
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 19:14:50 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/22 19:14:52 by apirusov         ###   ########.fr       */
+/*   Updated: 2024/04/23 20:10:24 by apirusov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 /*
 NAME
        strdup, strndup, strdupa, strndupa - duplicate a string
-
 SYNOPSIS
        #include <string.h>
 
@@ -47,8 +45,8 @@ char	*ft_safe_strdup(const char *s)
 	char	*ptr;
 	size_t	len;
 
-    if (!s)
-        return (NULL);
+	if (!s)
+		return (NULL);
 	len = ft_strlen(s);
 	ptr = (char *)malloc(sizeof(char) * (len + 1));
 	if (!ptr)

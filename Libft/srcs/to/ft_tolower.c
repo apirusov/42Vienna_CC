@@ -1,14 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_toupper.c                                       :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/02 14:31:12 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/08 16:01:38 by apirusov         ###   ########.fr       */
+/*   Created: 2024/04/23 20:15:11 by apirusov          #+#    #+#             */
+/*   Updated: 2024/04/23 20:16:20 by apirusov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 /*NAME
        toupper, tolower, toupper_l, tolower_l - convert uppercase or lowercase
 
@@ -43,18 +44,9 @@ RETURN VALUE
 */
 #include "libft.h"
 
-int	ft_toupper(int a)
+int	ft_tolower(int a)
 {
-	if (a >= 'a' && a <= 'z')
-		a = a - 32;
+	if (a >= 'A' && a <= 'Z')
+		a = a + 32;
 	return (a);
 }
-/*
-#include <stdlib.h>
-#include <stdio.h>
-int main(int ac, char **av)
-{
-	(void)ac;
-	printf("%c\n", ft_toupper(*av[1]));
-	return (0);
-}*/

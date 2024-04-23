@@ -5,113 +5,107 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/20 11:41:24 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/20 11:41:27 by apirusov         ###   ########.fr       */
+/*   Created: 2024/04/23 13:17:25 by apirusov          #+#    #+#             */
+/*   Updated: 2024/04/23 18:31:53 by apirusov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-bool find_newline(t_list *list)
+size_t	ft_strlcat(char *dest, const char *src, size_t size)
 {
-    size_t i;
+	size_t	i;
+	size_t	j;
 
-    if (!list)
-        return (false);
-    while (list)
-    {
-        i = 0;
-        while (list->content[i] && i < BUFFER_SIZE)
-        {
-            if (list->content[i] == '\n')
-                return (true);
-            i++;
-        }
-        list = list->next;
-    }
-    return (false);
+	i = 0;
+	j = 0;
+	if (!dest && !size)
+		return (0);
+	i = ft_strlen(dest);
+	if (size <= i)
+		return (size + ft_strlen(src));
+	while (src[j] && i + j + 1 < size && size >= 2)
+	{
+		dest[i + j] = src[j];
+		j++;
+	}
+	if (i + j < size)
+		dest[i + j] = '\0';
+	return (i + ft_strlen(src));
 }
 
-size_t strlen_to_NL(t_list *list)
+size_t	ft_strlen(const char *s)
 {
-    size_t len;
-    size_t i;
-    
-    if (!list)
-        return (0);
-    len = 0;
-    while (list)
-    {
-        i = 0;
-        while (list->content[i])
-        {
-            if (list->content[i] == '\n')
-            {
-                len++;
-                return (len);
-            }
-            i++;
-            len++;
-        }
-        list = list->next;
-    }
-    return (len);
+	size_t	i;
+
+	if (!s)
+		return (0);
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }
 
-void my_strcpy(char *next_str, t_list *list)
+size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 {
-    size_t i;
-    size_t j;
+	size_t	i;
 
-    if (!list)
-        return ;
-    i = 0;
-    while (list)
-    {
-        j = 0;
-        while (list->content[j])
-        {
-            if (list->content[j] == '\n')
-            {
-                next_str[i++] = '\n';
-                next_str[i] = '\0';
-                return ;
-            }
-            next_str[i++] = list->content[j++];
-        }
-        list = list->next;
-    }
-    next_str[i] = '\0';
+	i = 0;
+	if (size == 0)
+	{
+		while (src[i])
+			i++;
+		return (i);
+	}
+	while (src[i] && i < size - 1)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	if (i < size)
+		dest[i] = '\0';
+	while (src[i])
+		i++;
+	return (i);
 }
 
-void ft_free(t_list **list, t_list *clean_node, char *buf)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-    t_list *tmp;
+	size_t	i;
+	size_t	j;
+	char	*res;
 
-    if (!*list)
-        return ;
-    while (*list)
-    {
-        tmp = (*list)->next;
-        free((*list)->content);
-        free(*list);
-        *list = tmp;
-    }
-    *list = NULL;
-    if (clean_node->content[0])
-        *list = clean_node;
-    else
-    {
-        free(buf);
-        free(clean_node);
-    }
+	if (!s)
+		return (0);
+	if (start > ft_strlen(s))
+		len = 0;
+	if (len > ft_strlen(s) - start)
+		len = ft_strlen(s) - start;
+	res = (char *)malloc(sizeof(char) * (len + 1));
+	if (res == NULL)
+		return (0);
+	i = start;
+	j = 0;
+	while (i < ft_strlen(s) && j < len)
+		res[j++] = s[i++];
+	res[j] = '\0';
+	return (res);
 }
 
-t_list	*my_lst_last(t_list *list)
+int	ft_strchr_index(const char *s, int c)
 {
-	if (!list)
-		return (NULL);
-	while (list->next)
-		list = list->next;
-	return (list);
+	int	i;
+
+	i = 0;
+	if (!s)
+		return (-1);
+	while (s[i] != '\0')
+	{
+		if ((unsigned char)c == s[i])
+			return (i);
+		i++;
+	}
+	if ((unsigned char)c == '\0')
+		return (i);
+	return (-1);
 }

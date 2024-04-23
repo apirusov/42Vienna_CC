@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/20 11:33:31 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/20 11:33:35 by apirusov         ###   ########.fr       */
+/*   Created: 2024/04/23 13:16:34 by apirusov          #+#    #+#             */
+/*   Updated: 2024/04/23 18:35:21 by apirusov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#   define BUFFER_SIZE 10
+#  define BUFFER_SIZE 32
 # endif
 
 # include <stdlib.h>
@@ -24,23 +24,14 @@
 # include <stdint.h>
 # include <stdbool.h>
 
-typedef struct s_list
-{
-    char			*content;
-    struct s_list	*next;
-}	t_list;
+/*******************************GET NEXT LINE*********************************/
+char	*get_next_line(int fd);
 
-/*******************************GET NEXT LINE********************************/
-char *get_next_line(int fd);
-/***********************************BUFFER************************************/
-void create_buffer(int fd, t_list **list);
-void add_buffer(t_list **list, char *buffer);
 /*********************************UTILITIES***********************************/
-bool find_newline(t_list *list);
-size_t strlen_to_NL(t_list *list);
-void my_strcpy(char *next_str, t_list *list);
-void ft_free(t_list **list, t_list *clean_node, char *buf);
-void clean_list(t_list **list);
-t_list	*my_lst_last(t_list *lst);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+int		ft_strchr_index(const char *s, int i);
+size_t	ft_strlen(const char *s);
+size_t	ft_strlcat(char *dest, const char *src, size_t size);
+size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 
 #endif

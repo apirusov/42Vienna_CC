@@ -60,7 +60,7 @@ bonus: ${NAME} ${BONUS_O} ${OBJS}
 		${LIB} ${NAME}
 
 so:
-	$(CC) -nostartfiles -fPIC $(CFLAGS) $(SRC)
+	$(CC) -nostartfiles -fPIC $(CFLAGS) $(SRCS_PATH)
 	gcc -nostartfiles -shared -o libft.so $(OBJS) $(BONUS_O)
 
 clean:

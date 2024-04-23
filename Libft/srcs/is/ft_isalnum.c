@@ -20,6 +20,6 @@ isalnum()
 int	ft_isalnum(int a)
 {
 	if (ft_islower(a) || ft_isupper(a) || ft_isdigit(a))
-		return (1);
+		return (8);
 	return (0);
 }

@@ -37,6 +37,9 @@ int		ft_isdigit(int a);
 int		ft_isalnum(int a);
 int		ft_isascii(int a);
 int		ft_isprint(int a);
+int		ft_isspace(int a);
+int		ft_ispunct(int c);
+int		ft_isxdigit(int c);
 
 /************************************ T O ************************************/
 int		ft_tolower(int a);

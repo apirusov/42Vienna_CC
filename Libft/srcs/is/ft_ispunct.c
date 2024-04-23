@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isupper.c                                       :+:      :+:    :+:   */
+/*   ft_ispunct.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/04 19:50:32 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/08 15:27:43 by apirusov         ###   ########.fr       */
+/*   Created: 2024/04/23 19:55:17 by apirusov          #+#    #+#             */
+/*   Updated: 2024/04/23 20:06:16 by apirusov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 /*
 SYNOPSIS
 	#include <ctype.h>
-	int isupper(int c);
+	int ispunct(int c);
 DESCRIPTION
-	isupper() checks for an uppercase letter.
+	ispunct() checks for any printable character which is not a space or an 
+	alphanumeric character.
 RETURN VALUE
 	The  values  returned  are nonzero if the character c falls into the tested
    	class, and zero if not.
 */
 #include "libft.h"
 
-int	ft_isupper(int c)
+int	ft_ispunct(int c)
 {
-	if (c >= 'A' && c <= 'Z')
-		return (256);
+	if (ft_isprint(c) && !ft_isspace(c) && !ft_isalnum(c))
+		return (4);
 	return (0);
 }
