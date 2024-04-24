@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"	
+#include "get_next_line.h"
+#include <stdio.h>
 
-static char	*read_file(int fd, char *buffer)
+static char	*read_file(int fd)
 {
 	char	*temp;
 	int		char_read;
@@ -20,44 +21,55 @@ static char	*read_file(int fd, char *buffer)
 	temp = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!temp)
 	{
-		if (buffer)
-			free(buffer);
 		return (0);
 	}
 	char_read = read(fd, temp, BUFFER_SIZE);
 	if (char_read < 0)
 	{
 		free(temp);
+		temp = NULL;
 		return (0);
 	}
+	// if (char_read == 0)
+	// {
+	// 	if (!temp || *temp == '\0')
+	// 	{
+	// 		free(temp);
+	// 		temp = NULL;
+	// 		return (NULL);
+	// 	}
+	// }
 	temp[char_read] = '\0';
 	return (temp);
 }
 
-static char	*make_more(int fd, char *buffer)
+static char	*make_more(int fd, char **buffer)
 {
 	char	*char_temp;
 	char	*new_buf;
 	int		new_len;
 
-	char_temp = read_file(fd, buffer);
+	char_temp = read_file(fd); // returned null
 	if (!char_temp)
-		return (NULL);
+		return (free(*buffer), *buffer = NULL, NULL);
 	if (!char_temp[0])
 	{
 		free(char_temp);
-		return (buffer);
+		char_temp = NULL;
+		return (*buffer);
 	}
-	if (!buffer)
+	if (!*buffer)
 		return (char_temp);
-	new_len = ft_strlen(buffer) + ft_strlen(char_temp);
+	new_len = ft_strlen(*buffer) + ft_strlen(char_temp);
 	new_buf = (char *)malloc(sizeof(char) * (new_len + 1));
 	if (!new_buf)
-		return (NULL);
-	ft_strlcpy(new_buf, buffer, new_len + 1);
+		return (free(*buffer), *buffer = NULL, NULL);
+	ft_strlcpy(new_buf, *buffer, new_len + 1);
 	ft_strlcat(new_buf, char_temp, new_len + 1);
-	free(buffer);
+	free(*buffer);
+	*buffer = NULL;
 	free(char_temp);
+	char_temp = NULL;
 	return (new_buf);
 }
 
@@ -91,11 +103,11 @@ char	*get_next_line(int fd)
 	if (ft_strchr_index(buffer, '\n') == -1)
 	{
 		char_read = ft_strlen(buffer);
-		buffer = make_more(fd, buffer);
+		buffer = make_more(fd, &buffer);
 		if (char_read == ft_strlen(buffer) && buffer)
 			line = ft_substr(buffer, 0, ft_strlen(buffer));
 	}
-	if (!buffer)
+	if (buffer == NULL)
 		return (NULL);
 	if (!line && ft_strchr_index(buffer, '\n') != -1)
 		line = ft_substr(buffer, 0, ft_strchr_index(buffer, '\n') + 1);
