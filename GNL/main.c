@@ -1,26 +1,16 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/20 11:41:32 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/20 11:41:34 by apirusov         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+#include <unistd.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <stdio.h>
 #include "get_next_line.h"
 
-int main ()
+int main()
 {
-    int fd;
-    char *line;
-    int lines = 1;
+    int fd = open("test.txt", O_RDONLY);
 
-    fd = open("test.txt", O_RDONLY);
-    while ((line = get_next_line(fd)))
-        printf("fd-> %d: %s\n", lines++, line);
-    close(fd);
-    return (0);
+    char *line;
+    line = get_next_line(fd);
+    printf("line: %s\n", line);
+    free(line);
+    line = get_next_line(fd);
 }

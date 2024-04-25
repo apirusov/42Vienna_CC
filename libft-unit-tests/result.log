@@ -1,0 +1,78 @@
+ft_memset:     [OK] [OK] [OK] [OK] [OK] [OK] [OK] 
+ft_bzero:      [OK] [OK] [OK] [OK] 
+ft_memcpy:     [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] 
+ft_memmove:    [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] 
+ft_memchr:     [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] 
+ft_memcmp:     [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] 
+ft_strlen:     [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] 
+ft_isalpha:    [OK] 
+ft_isdigit:    [OK] 
+ft_isalnum:    [OK] 
+ft_isascii:    [OK] 
+ft_isprint:    [OK] 
+ft_toupper:    [OK] 
+ft_tolower:    [OK] 
+ft_strchr:     [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] 
+ft_strrchr:    [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] 
+ft_strncmp:    [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] 
+ft_strlcpy:    [OK] [OK] [OK] [OK] [OK] [OK] [OK] 
+ft_strlcat:    [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] 
+ft_strnstr:    [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] 
+ft_atoi:       [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] 
+ft_calloc:     [OK] [OK] [OK] [OK] [OK] 
+ft_strdup:     [OK] [OK] [OK] [OK] [OK] [OK] [OK] 
+ft_substr:     [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] {protected}[OK] 
+ft_strjoin:    [OK] [OK] [OK] [OK] [OK] {protected}
+ft_strtrim:    [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] {protected}
+ft_split:      [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] {protected}
+ft_itoa:       [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] 
+ft_strmapi:    [OK] [OK] [OK] [OK] [OK] {protected}
+ft_putchar_fd: [OK] [OK] 
+ft_putstr_fd:  [OK] [OK] {protected}
+ft_putendl_fd: [OK] [OK] {protected}
+ft_putnbr_fd:  [OK] [OK] [OK] [OK] [OK] 
+ft_lstnew:     [OK] [OK] [OK] [OK] 
+ft_lstadd_front: [OK] [OK] [OK] 
+ft_lstsize:    [OK] [OK] 
+ft_lstlast:    [OK] [OK] 
+ft_lstadd_back:[OK] [OK] [OK] 
+ft_lstdelone:  [OK] {protected}
+ft_lstclear:   [OK] [OK] [OK] {protected}
+ft_lstiter:    [OK] {protected}
+ft_lstmap:     [OK] {protected}
+ft_strcpy:     [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] 
+ft_strncpy:    [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] 
+ft_strcmp:     [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] [OK] 
+ft_striteri:   [OK] [OK] {protected}
+ft_putchar:    [OK] [OK] [KO] 
+[KO]: your putchar does not work with unicode
+Test code:
+	char buff[10];
+	char buff2[10];
+	int len = 0;
+	int i = 0;
+
+	while (haiku_0[i++])
+	{
+		wchar_t c = haiku_0[i];
+		putwchart(c, &len, buff2);
+		buff2[len] = 0;
+		fd_to_buffer(1);
+		ft_putchar(c);
+		write(1, "", 1);
+		get_fd_buffer(1, buff, 10);
+		if (strcmp(buff, buff2))
+		{
+			exit(TEST_KO);
+		}
+	}
+	exit(TEST_SUCCESS);
+
+Diffs:
+     putchar: |池|
+  ft_putchar: |`|
+
+ft_putstr:     [OK] [OK] {protected}
+ft_putnbr:     [OK] [OK] [OK] [OK] [OK] 
+ft_islower:    [OK] 
+ft_isupper:    [OK] 
