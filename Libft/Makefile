@@ -6,7 +6,7 @@
 #    By: apirusov <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/04 18:10:48 by apirusov          #+#    #+#              #
-#    Updated: 2024/04/09 14:30:29 by apirusov         ###   ########.fr        #
+#    Updated: 2024/04/25 14:56:23 by apirusov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRCDIR= .
 	  ft_isupper.c ft_memmove.c ft_strcmp.c ft_substr.c ft_itoa.c ft_memset.c \
 	  ft_strcpy.c ft_tohex.c ft_numlen.c ft_strdup.c ft_tolower.c ft_putchar.c \
   	  ft_striteri.c ft_toupper.c ft_putchar_fd.c ft_strjoin.c ft_strmapi.c
+
 
 DIR_SRCS = srcs
 SUBDIRS = is mem str to lst math put
