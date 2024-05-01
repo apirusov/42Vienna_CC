@@ -5,168 +5,105 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/23 13:08:38 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/24 16:40:13 by apirusov         ###   ########.fr       */
+/*   Created: 2024/04/30 17:40:34 by apirusov          #+#    #+#             */
+/*   Updated: 2024/04/30 17:40:39 by apirusov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"	
 
-static void ft_free(char **ptr)
+static char	*ft_getline(char *buffer)
 {
-	if (*ptr)
+	int		i;
+	char	*line;
+
+	i = 0;
+	if (!buffer[i])
+		return (NULL);
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	line = (char *)malloc(sizeof(char) * (i + 2));
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
 	{
-		free(*ptr);
-		*ptr = NULL;
+		line[i] = buffer[i];
+		i++;
 	}
+	if (buffer[i] == '\n')
+	{
+		line[i] = buffer[i];
+		i++;
+	}
+	line[i] = '\0';
+	return (line);
 }
 
-static char	*read_file(int fd, char *buffer)
+static char	*expand_buffer(char *buffer)
 {
-	char	*temp;
-	int		char_read;
-	static int i = 0;
-	temp = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	/*1. malloc fails && buffer !empty
-	2. malloc fails && buffer empty
-	3. malloc ok && buffer !empty
-	4. malloc ok &6 buffer empty */
-	if (!temp) //1, 2
-	{
-		if (buffer) //1
-			ft_free(&buffer);
-		return (0);
-	}
-	// 3, 4
-	char_read = read(fd, temp, BUFFER_SIZE);
-	if (i == 1)
-		char_read = -1;
-	i++;
-	/*1. read = -1 && buffer !empty
-	2. read = -1 && buffer empty
-	3. read = 0 && buffer !empty
-	4. read = 0 && buffer empty
-	5. read ok && buffer !empty
-	6. read ok && buffer empty*/
-	if (char_read < 0) // 1, 2
+	int		i;
+	int		j;
+	char	*res;
+
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	if (!buffer[i])
 	{
 		ft_free(&buffer);
-		ft_free(&temp); // 1, 2 if buffer is !empty i want to pass it into gnl
 		return (NULL);
 	}
-	/* 3, 4, 5, 6
-	if 3 || 4 -> idc about buffer, char_read = 0 and there is 1 byte for \0 in temp
-	if 5 || 6 -> idc about buffer, char_read = n, everything's ok 	*/
-	temp[char_read] = '\0';
-	return (temp);
-}
-
-static char	*expand_buffer(int fd, char *buffer)
-{
-	char	*char_temp;
-	char	*new_buf;
-	int		new_len;
-
-	char_temp = read_file(fd, buffer);
-	if (!char_temp)
+	res = (char *)malloc(sizeof(char) * (ft_strlen(buffer) - i + 1));
+	if (!res)
 		return (NULL);
-	if (!char_temp[0])
-	{
-		ft_free(&char_temp);
-		return (buffer);
-	}
-	if (!buffer)
-		return (char_temp);
-	new_len = ft_strlen(buffer) + ft_strlen(char_temp);
-	new_buf = (char *)malloc(sizeof(char) * (new_len + 1));
-	if (!new_buf)
-		return (NULL);
-	ft_strlcpy(new_buf, buffer, new_len + 1);
-	ft_strlcat(new_buf, char_temp, new_len + 1);
+	i++;
+	j = 0;
+	while (buffer[i])
+		res[j++] = buffer[i++];
+	res[j] = '\0';
 	ft_free(&buffer);
-	ft_free(&char_temp);
-	return (new_buf);
+	return (res);
 }
 
-static char	*decrement_buffer(char *buf, char *line)
+static char	*read_till_new(int fd, char *buffer)
 {
-	char	*new_buf;
-	int		new_len;
+	char	*tmp_buf;
+	int		read_bytes;
 
-	if (!buf || !line)
+	tmp_buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!tmp_buf)
 		return (NULL);
-	new_len = ft_strlen(line);
-	if (new_len == (int)ft_strlen(buf))
+	read_bytes = 1;
+	while (!ft_strchr(buffer, '\n') && read_bytes != 0)
 	{
-		ft_free(&buf);
-		return (NULL);
+		read_bytes = read(fd, tmp_buf, BUFFER_SIZE);
+		if (read_bytes == -1)
+		{
+			ft_free(&tmp_buf);
+			return (NULL);
+		}
+		tmp_buf[read_bytes] = '\0';
+		buffer = ft_strjoin(buffer, tmp_buf);
 	}
-	new_buf = ft_substr(buf, new_len, ft_strlen(buf) - new_len);
-	ft_free(&buf); // free old buffer
-	return (new_buf); 
+	ft_free(&tmp_buf);
+	return (buffer);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*buffer;
 	char		*line;
-	size_t		char_read;
-
+	
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (printf("%p\n", buffer), NULL);
-	line = NULL;
-	if (ft_strchr_index(buffer, '\n') == -1) // no \n in buffer
-	{
-		/* save buffer length */
-		char_read = ft_strlen(buffer);
-		/* read file and expand buffer */
-		buffer = expand_buffer(fd, buffer);
-		/* if buffer didn't change and buffer is not empty */
-		if (buffer && char_read == ft_strlen(buffer)) 
-			line = ft_substr(buffer, 0, ft_strlen(buffer));
-	}
+		return (0);
+	buffer = read_till_new(fd, buffer);
 	if (!buffer)
-	{
-		// printf("buffer: %p\n", buffer);
-		// printf("buffer: %s\n", buffer);
-		//ft_free(&buffer);
-		//buffer = NULL;
-		// printf("buffer: %p\n", buffer);
-		// printf("buffer: %s\n", buffer);
-		return (printf("%p\n", buffer), NULL);
-	}
-	if (!line && ft_strchr_index(buffer, '\n') != -1)
-		line = ft_substr(buffer, 0, ft_strchr_index(buffer, '\n') + 1);
-	if (line)
-	{
-		buffer = decrement_buffer(buffer, line);
-		return (printf("%p\n", buffer), line);
-	}
-	return (printf("%p\n", buffer), get_next_line(fd));
-}
-
-
-char testnextline(int fd)
-{
-	static char *buffer;
-	char *line;
-	int read_bytes;
-
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	{	
+		ft_free(&buffer);
 		return (NULL);
-	if (isNewLineInBuffer(buffer))
-		return (getLineFromBuffer(buffer));
-	while (1)
-	{
-		read_bytes = read(fd, line, BUFFER_SIZE);
-		if (read_bytes < 0)
-			return (freeBuffer(buffer));
-		if (read_bytes == 0)
-			return (returnWholeBuffer(buffer)); // mb getLineFromBuffer(buffer) can be the same
-		line[read_bytes] = '\0';
-		buffer = appendBuffer(buffer, line, read_bytes);
-		if (isNewLineInBuffer(buffer))
-			break ;
 	}
-	return (getLineFromBuffer(buffer));
+	line = ft_getline(buffer);
+	buffer = expand_buffer(buffer);
+	return (line);
 }

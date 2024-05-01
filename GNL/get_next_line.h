@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/23 13:16:34 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/23 18:35:21 by apirusov         ###   ########.fr       */
+/*   Created: 2024/04/30 17:40:25 by apirusov          #+#    #+#             */
+/*   Updated: 2024/04/30 17:40:29 by apirusov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,9 @@
 char	*get_next_line(int fd);
 
 /*********************************UTILITIES***********************************/
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-int		ft_strchr_index(const char *s, int i);
-size_t	ft_strlen(const char *s);
-size_t	ft_strlcat(char *dest, const char *src, size_t size);
-size_t	ft_strlcpy(char *dest, const char *src, size_t size);
+char	*ft_strchr(char *s, int c);
+char	*ft_strjoin(char *s1, char *s2);
+size_t	ft_strlen(char *s);
+void    ft_free(char **ptr);
 
 #endif
