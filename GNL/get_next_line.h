@@ -28,9 +28,14 @@
 char	*get_next_line(int fd);
 
 /*********************************UTILITIES***********************************/
-char	*ft_strchr(char *s, int c);
-char	*ft_strjoin(char *s1, char *s2);
-size_t	ft_strlen(char *s);
-void    ft_free(char **ptr);
+char	*ft_strjoin(char **s1, char *s2);
+char	*ft_calloc(size_t nmemb, size_t size);
+int	    ft_strchr(const char *s, int c);
+size_t	ft_strlen(char *str);
+char	*ft_newstr(char **str);
+char	*ft_new(char **str);
+void	*ft_allocate_read_check(ssize_t *nbyte, int *fd, \
+								char **buf, char **line);
+void ft_free(char **ptr);
 
 #endif

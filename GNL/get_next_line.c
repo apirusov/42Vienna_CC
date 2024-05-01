@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_buffer.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,98 +12,99 @@
 
 #include "get_next_line.h"	
 
-static char	*ft_getline(char *buffer)
+char	*ft_new(char **str)
 {
-	int		i;
-	char	*line;
+	char	*ptr;
+	size_t	len;
+	size_t	i;
 
 	i = 0;
-	if (!buffer[i])
-		return (NULL);
-	while (buffer[i] && buffer[i] != '\n')
-		i++;
-	line = (char *)malloc(sizeof(char) * (i + 2));
-	if (!line)
-		return (NULL);
-	i = 0;
-	while (buffer[i] && buffer[i] != '\n')
+	len = 0;
+	while ((*str)[len] && (*str)[len] != '\n')
+		len++;
+	if ((*str)[len] == '\n')
+		len++;
+	ptr = ft_calloc((len + 1), sizeof(char));
+	if (!ptr)
+		return (ft_free(str), NULL);
+	while (i < len)
 	{
-		line[i] = buffer[i];
+		ptr[i] = (*str)[i];
 		i++;
 	}
-	if (buffer[i] == '\n')
-	{
-		line[i] = buffer[i];
-		i++;
-	}
-	line[i] = '\0';
-	return (line);
+	return (ptr);
 }
 
-static char	*expand_buffer(char *buffer)
+char	*ft_newstr(char **str)
 {
-	int		i;
-	int		j;
-	char	*res;
+	char	*ptr;
+	size_t	i;
+	size_t	rest_str;
+	size_t	j;
 
 	i = 0;
-	while (buffer[i] && buffer[i] != '\n')
+	while ((*str)[i] && (*str)[i] != '\n')
 		i++;
-	if (!buffer[i])
-	{
-		ft_free(&buffer);
-		return (NULL);
-	}
-	res = (char *)malloc(sizeof(char) * (ft_strlen(buffer) - i + 1));
-	if (!res)
-		return (NULL);
+	if (!(*str)[i])
+		return (ft_free(str), NULL);
+	rest_str = ft_strlen(*str) - i;
+	ptr = ft_calloc(rest_str + 1, sizeof(char));
+	if (!ptr)
+		return (ft_free(str), NULL);
 	i++;
 	j = 0;
-	while (buffer[i])
-		res[j++] = buffer[i++];
-	res[j] = '\0';
-	ft_free(&buffer);
-	return (res);
+	while (j < rest_str)
+		ptr[j++] = (*str)[i++];
+	ft_free(str);
+	return (ptr);
 }
 
-static char	*read_till_new(int fd, char *buffer)
+void	*ft_allocate_read_check(ssize_t *read_byte, int *fd,
+								char **tmp_buf, char **buffer)
 {
-	char	*tmp_buf;
-	int		read_bytes;
-
-	tmp_buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!tmp_buf)
+	if (*fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	read_bytes = 1;
-	while (!ft_strchr(buffer, '\n') && read_bytes != 0)
+	(*tmp_buf) = ft_calloc((size_t)BUFFER_SIZE + 1, sizeof(char));
+	if (!(*tmp_buf))
 	{
-		read_bytes = read(fd, tmp_buf, BUFFER_SIZE);
-		if (read_bytes == -1)
-		{
-			ft_free(&tmp_buf);
-			return (NULL);
-		}
-		tmp_buf[read_bytes] = '\0';
-		buffer = ft_strjoin(buffer, tmp_buf);
+		ft_free(&(*buffer));
+		return (NULL);
 	}
-	ft_free(&tmp_buf);
-	return (buffer);
+	*read_byte = read(*fd, *tmp_buf, BUFFER_SIZE);
+	if (*read_byte < 0)
+	{
+		ft_free(tmp_buf);
+		ft_free(buffer);
+		return (NULL);
+	}
+	return (*tmp_buf);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
-	char		*line;
-	
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (0);
-	buffer = read_till_new(fd, buffer);
-	if (!buffer)
-	{	
-		ft_free(&buffer);
+	static char		*buffer;
+	char			*line;
+	char			*tmp_buf;
+	ssize_t			read_byte;
+
+	if (!ft_allocate_read_check(&read_byte, &fd, &tmp_buf, &buffer))
 		return (NULL);
+	while (read_byte > 0)
+	{
+		tmp_buf[read_byte] = '\0';
+		buffer = ft_strjoin(&buffer, tmp_buf);
+		if (!buffer)
+			return (ft_free(&tmp_buf), NULL);
+		if (ft_strchr(buffer, '\n') == 1)
+			break ;
+		read_byte = read(fd, tmp_buf, BUFFER_SIZE);
 	}
-	line = ft_getline(buffer);
-	buffer = expand_buffer(buffer);
+	ft_free(&tmp_buf);
+	if (!buffer || buffer[0] == '\0')
+		return (ft_free(&buffer), NULL);
+	line = ft_new(&buffer);
+	if (!line)
+		return (NULL);
+	buffer = ft_newstr(&buffer);
 	return (line);
 }
