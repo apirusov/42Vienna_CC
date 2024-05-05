@@ -6,13 +6,13 @@
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:40:52 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/30 17:40:54 by apirusov         ###   ########.fr       */
+/*   Updated: 2024/05/05 13:21:13 by apirusov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void ft_free(char **ptr)
+void	ft_free(char **ptr)
 {
 	if (*ptr)
 	{
@@ -24,10 +24,10 @@ void ft_free(char **ptr)
 char	*ft_calloc(size_t nmemb, size_t size)
 {
 	char	*ptr;
-	size_t i;
+	size_t	i;
 
 	i = 0;
-	if (size == 0 && nmemb == 0)
+	if (size == 0 || nmemb == 0)
 	{
 		ptr = (void *)malloc(0);
 		return (ptr);
@@ -76,7 +76,7 @@ char	*ft_strjoin(char **s1, char *s2)
 	}
 	if (!*s1 || !s2)
 		return (NULL);
-	res = (char *)ft_calloc(sizeof(char), ((ft_strlen(*s1) + ft_strlen(s2)) + 1));
+	res = ft_calloc(sizeof(char), ((ft_strlen(*s1) + ft_strlen(s2)) + 1));
 	if (res == NULL)
 		return (ft_free(s1), NULL);
 	i = -1;

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_buffer.c                                    :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 17:40:34 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/30 17:40:39 by apirusov         ###   ########.fr       */
+/*   Updated: 2024/05/05 13:19:22 by apirusov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"	
 
-char	*ft_new(char **str)
+static char	*ft_get_line(char **str)
 {
 	char	*ptr;
 	size_t	len;
@@ -35,7 +35,7 @@ char	*ft_new(char **str)
 	return (ptr);
 }
 
-char	*ft_newstr(char **str)
+static char	*get_buf(char **str)
 {
 	char	*ptr;
 	size_t	i;
@@ -59,7 +59,7 @@ char	*ft_newstr(char **str)
 	return (ptr);
 }
 
-void	*ft_allocate_read_check(ssize_t *read_byte, int *fd,
+static void	*check_read_alloc(ssize_t *read_byte, int *fd,
 								char **tmp_buf, char **buffer)
 {
 	if (*fd < 0 || BUFFER_SIZE <= 0)
@@ -87,7 +87,7 @@ char	*get_next_line(int fd)
 	char			*tmp_buf;
 	ssize_t			read_byte;
 
-	if (!ft_allocate_read_check(&read_byte, &fd, &tmp_buf, &buffer))
+	if (!check_read_alloc(&read_byte, &fd, &tmp_buf, &buffer))
 		return (NULL);
 	while (read_byte > 0)
 	{
@@ -102,9 +102,9 @@ char	*get_next_line(int fd)
 	ft_free(&tmp_buf);
 	if (!buffer || buffer[0] == '\0')
 		return (ft_free(&buffer), NULL);
-	line = ft_new(&buffer);
+	line = ft_get_line(&buffer);
 	if (!line)
 		return (NULL);
-	buffer = ft_newstr(&buffer);
+	buffer = get_buf(&buffer);
 	return (line);
 }
