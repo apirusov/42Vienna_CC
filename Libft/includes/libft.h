@@ -46,6 +46,7 @@ int		ft_tolower(int a);
 int		ft_toupper(int a);
 int		ft_atoi(const char *str);
 char	*ft_itoa(int n);
+long	ft_atol(const char *str);
 
 /*********************************** M E M **********************************/
 void	*ft_bzero(void *s, size_t n);
