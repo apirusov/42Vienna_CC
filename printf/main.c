@@ -11,6 +11,10 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h>
+#include <limits.h>
+#include <string.h>
+#include <stdlib.h>
 
 #define RST "\033[0m"
 #define O   "\033[1;33m"  // BOLD Yellow
@@ -349,7 +353,7 @@ void test_other()
 {
 	ft_printf(M"************************* M O R E \tT E S T S *************************\n"RST);
 	char long_string[5000];
-	ft_memset(long_string, 'a', 5000);
+	memset(long_string, 'a', 5000);
 	long_string[4999] = 0;
 	printf(Y"\t\t^%d bytes written\n", printf(Y"___printf: string with 5000 chars in buf: "Y"%s"RST"\n", long_string));
 	printf(G"\t\t^%d bytes written\n", ft_printf(G"ft_printf: string with 5000 chars in buf: "G"%s"RST"\n", long_string));
@@ -457,15 +461,15 @@ void test_man()
 	printf(G"\t\t^%d bytes written\n", ft_printf(G"ft_printf: ptr NULL [%%-15p]: "G"[%-15p]"RST"\n", null));
 	ft_printf(M"************************* M O R E \tT E S T S *************************\n"RST);
 	char long_string[5000];
-	ft_memset(long_string, 'a', 5000);
+	memset(long_string, 'a', 5000);
 	long_string[4999] = 0;
 	printf(Y"\t\t^%d bytes written\n", printf(Y"___printf: string with 5000 chars in buf: "Y"%s"RST"\n", long_string));
 	printf(G"\t\t^%d bytes written\n", ft_printf(G"ft_printf: string with 5000 chars in buf: "G"%s"RST"\n", long_string));
-	//printf(Y"\t\t^%d bytes written\n", printf(Y"___printf: specifiers > args [%%s %%d %%c %%x] \"Hello\", 10, 'R': "Y"[%s %d %c %x]"RST"\n", "Hello", 10, 'R'));
+	printf(Y"\t\t^%d bytes written\n", printf(Y"___printf: specifiers > args [%%s %%d %%c %%x] \"Hello\", 10, 'R': "Y"[%s %d %c %x]"RST"\n", "Hello", 10, 'R'));
 	printf(G"\t\t^%d bytes written\n", ft_printf(G"ft_printf: specifiers > args [%%s %%d %%c %%x] \"Hello\", 10, 'R': "G"[%s %d %c %x]"RST"\n", "Hello", 10, 'R'));
-	printf(Y"\t\t^%d bytes written\n", printf(Y"___printf: specifiers < args [%%s %%d %%c] \"Hello\", 10, 'R': "Y"[%s %d %c %x]"RST"\n", "Hello", 10, 'R', 314));
-	printf(G"\t\t^%d bytes written\n", ft_printf(G"ft_printf: specifiers < args [%%s %%d %%c] \"Hello\", 10, 'R': "G"[%s %d %c %x]"RST"\n", "Hello", 10, 'R', 314));
-	//printf(Y"\t\t^%d bytes written\n", printf(Y"___printf: No specifier, but is arg [%%] "Y"[%]"RST"\n", 314));
+	printf(Y"\t\t^%d bytes written\n", printf(Y"___printf: specifiers < args [%%s %%d %%c] \"Hello\", 10, 'R': "Y"[%s %d %c]"RST"\n", "Hello", 10, 'R', 314));
+	printf(G"\t\t^%d bytes written\n", ft_printf(G"ft_printf: specifiers < args [%%s %%d %%c] \"Hello\", 10, 'R': "G"[%s %d %c]"RST"\n", "Hello", 10, 'R', 314));
+	printf(Y"\t\t^%d bytes written\n", printf(Y"___printf: No specifier, but is arg [%%] "Y"[%]"RST"\n", 314));
 	printf(G"\t\t^%d bytes written\n", ft_printf(G"ft_printf: No specifier, but is arg [%%] "Y"[%]"RST"\n", 314));
 }
 
@@ -528,6 +532,8 @@ or %e%% of 100. (unexpected null!) %s It also is equal to %X or %x in \"hexadeci
 			test_binary();
 		else if (!strcmp(test, "test_other"))
 			test_other();
+		else if (!strcmp(test, "test_man"))
+			test_man();
 		else 
 		{
 			printf(Y"___printf:\n\tYOUR INPUT: %s\n", test);

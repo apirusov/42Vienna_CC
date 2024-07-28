@@ -6,7 +6,7 @@
 /*   By: apirusov <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 18:59:27 by apirusov          #+#    #+#             */
-/*   Updated: 2024/04/25 14:58:00 by apirusov         ###   ########.fr       */
+/*   Updated: 2024/04/19 13:57:32 by apirusov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,14 @@ DESCRIPTION
        printf uses the format string FORMAT to print the ARGUMENT arguments. 
 	   This means that it takes format specifiers in the format string and 
 	   replaces each with an argument.
+
        The format argument is re-used as many times as necessary to convert 
 	   all of  the  given  arguments. So printf %s\n flounder catfish clownfish
 	   shark will print four lines.
+
        Unlike echo, printf does not append a new line unless it is specified 
 	   as part of the string.
+
        It  doesn't support any options, so there is no need for a -- separator,
 	   which makes it easier to use for arbitrary input than echo. [1]
 
