@@ -451,9 +451,14 @@ void test_man()
 	ft_printf(M"************************* N U L L \tT E S T S *************************\n"RST);
 	printf(Y"\t\t^%d bytes written\n", printf(Y"___printf: string null: "Y"%s"RST"\n", null));
 	printf(G"\t\t^%d bytes written\n", ft_printf(G"ft_printf: string null: "G"%s"RST"\n", null));
+	printf(Y"\t\t^%d bytes written\n", printf(Y"___printf: string null [%%10s]: "Y"[%10s]"RST"\n", null));
+	printf(G"\t\t^%d bytes written\n", ft_printf(G"ft_printf: string null [%%10s]: "G"[%10s]"RST"\n", null));
 	printf(Y"\t\t^%d bytes written\n", printf(Y"___printf: ptr NULL: "Y"%p"RST"\n", null));
 	printf(G"\t\t^%d bytes written\n", ft_printf(G"ft_printf: ptr NULL: "G"%p"RST"\n", null));
-	
+	printf(Y"\t\t^%d bytes written\n", printf(Y"___printf: ptr NULL [%%20p]: "Y"[%20p]"RST"\n", null));
+	printf(G"\t\t^%d bytes written\n", ft_printf(G"ft_printf: ptr NULL [%%20p]: "G"[%20p]"RST"\n", null));
+	printf(Y"\t\t^%d bytes written\n", printf(Y"___printf: ptr NULL [%%-15p]: "Y"[%-15p]"RST"\n", null));
+	printf(G"\t\t^%d bytes written\n", ft_printf(G"ft_printf: ptr NULL [%%-15p]: "G"[%-15p]"RST"\n", null));
 	ft_printf(M"************************* M O R E \tT E S T S *************************\n"RST);
 	char long_string[5000];
 	memset(long_string, 'a', 5000);
