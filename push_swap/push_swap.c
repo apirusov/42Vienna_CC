@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "./includes/push_swap.h"
 
 static void	move_nodes(t_stack_node **a, t_stack_node **b)
 {

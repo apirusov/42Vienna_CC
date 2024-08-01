@@ -12,67 +12,67 @@
 
 NAME = push_swap.a
 
-# Sources
+# Directories
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -I ./includes
+
+# Directories
 SRC_DIR = ./srcs
 OBJ_DIR = ./bin
-
-SRC = push_swap \
-		push_swap_init \
-		stack_init \
-		stack_utils \
-		push_cmds \
-		swap_cmds \
-		rotate_cmds \
-		rotate_utils \
-		rev_rotate_cmds \
-		free_error \
-		tiny_sort
-SRCS = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRC)))
-BONUSES = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRC)))
-
-OBJS = $(SRCS:.c=.o)
-BONUS_O = $(BONUSES:.c=.o)
-HEAD = ./includes/
+INCLUDE_DIR = ./includes
 
 # Libraries
-LIBFT = libft.a
 LIBFT_DIR = ./lib/Libft
-LIBFT_FILE = $(addprefix $(LIBFT_DIR)/, $(LIBFT))
-CFLAGS += -I $(LIBFT_DIR)/includes
+LIBFT = $(LIBFT_DIR)/libft.a
+LIBFT_INC = $(LIBFT_DIR)/includes
 
-FT_PRINTF = libftprintf.a
-FT_PRINTF_DIR = ./lib/printf
-FT_PRINTF_FILE = $(addprefix $(FT_PRINTF_DIR)/, $(FT_PRINTF))
-CFLAGS += -I $(FT_PRINTF_DIR)/includes
+PRINTF_DIR = ./lib/printf
+PRINTF = $(PRINTF_DIR)/libftprintf.a
+PRINTF_INC = $(PRINTF_DIR)/includes
 
+# Source and object files
+SRCS = $(wildcard $(SRC_DIR)/*.c)
+OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -c
+# Archiver and other tools
 AR = ar rcs
 RM = /bin/rm -f
 LIB = ranlib
 
-all: ${NAME}
+# Main target
+all: $(NAME)
 
-${NAME}: ${OBJS}
-			${AR} ${NAME} ${OBJS}
-			${LIB} ${NAME}
+# Link libraries and create the main library
+$(NAME): $(OBJS) $(LIBFT) $(PRINTF)
+	$(CC) $(OBJS) $(LIBFT) $(PRINTF) -o $@
 
-.c.o:
-	${CC} ${CFLAGS} $< -I ${HEAD} -o ${<:.c=.o}
+# Rule to create object files
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -I $(INCLUDE_DIR) -I $(LIBFT_INC) -I $(PRINTF_INC) -c $< -o $@
 
-bonus: ${NAME} ${BONUS_O} 
-		${AR} ${NAME} ${BONUS_O}
-		${AR} ${NAME} ${OBJS}
-		${LIB} ${NAME}
+# Libraries compilation
+$(LIBFT):
+	make -C $(LIBFT_DIR)
 
+$(PRINTF):
+	make -C $(PRINTF_DIR)
+
+# Clean up object files
 clean:
-	${RM} ${OBJS} ${BONUS_O}
+	$(RM) $(OBJ_DIR)/*.o
+	make -C $(LIBFT_DIR) clean
+	make -C $(PRINTF_DIR) clean
 
+# Full clean, including the library
 fclean: clean
-	${RM} ${NAME}
+	$(RM) $(NAME)
+	make -C $(LIBFT_DIR) fclean
+	make -C $(PRINTF_DIR) fclean
 
+# Rebuild everything
 re: fclean all
+remake: fclean all
 
-rebonus: fclean bonus
-.PHONY: all clean fclean re bonus rebonus
+.PHONY: all clean fclean re
+
