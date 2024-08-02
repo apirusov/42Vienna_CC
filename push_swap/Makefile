@@ -19,7 +19,7 @@ CFLAGS = -Wall -Wextra -Werror -I ./includes
 # Directories
 SRC_DIR = ./srcs
 OBJ_DIR = ./bin
-INCLUDE_DIR = ./includes
+HEAD = ./includes
 
 # Libraries
 LIBFT_DIR = ./lib/Libft
@@ -42,14 +42,14 @@ LIB = ranlib
 # Main target
 all: $(NAME)
 
-# Link libraries and create the main library
+# Link libraries and create the executable
 $(NAME): $(OBJS) $(LIBFT) $(PRINTF)
-	$(CC) $(OBJS) $(LIBFT) $(PRINTF) -o $@
+	$(CC) $(OBJS) $(LIBFT) $(PRINTF) -o $(NAME)
 
 # Rule to create object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -I $(INCLUDE_DIR) -I $(LIBFT_INC) -I $(PRINTF_INC) -c $< -o $@
+	$(CC) $(CFLAGS) -I $(HEAD) -I $(LIBFT_INC) -I $(PRINTF_INC) -c $< -o $@
 
 # Libraries compilation
 $(LIBFT):

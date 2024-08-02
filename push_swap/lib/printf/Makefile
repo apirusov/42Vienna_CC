@@ -12,20 +12,14 @@
 
 NAME = libftprintf.a
 
+# Directories
 SRCDIR = .
-SRC = ft_printf \
-	buffer \
-	utilities \
-	parse \
-	print_cs \
-	print_num \
-	print_ptr
-SRCS = $(addprefix $(SRCDIR)/, $(addsuffix .c, $(SRC)))
-BONUSES = $(addprefix $(SRCDIR)/, $(addsuffix .c, $(SRC)))
-
-OBJS = $(SRCS:.c=.o)
-BONUS_O= ${BONUSES:.c=.o}
+SRC_DIR = ./srcs
+OBJ_DIR = ./bin
 HEAD = ./includes/
+
+SRCS = $(wildcard $(SRC_DIR)/*.c)
+OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
 CC = cc
 CFLAGS += -Wall -Werror -Wextra -c
@@ -36,24 +30,23 @@ LIB = ranlib
 all: ${NAME}
 
 ${NAME}: ${OBJS}
-			${AR} ${NAME} ${OBJS}
-			${LIB} ${NAME}
+	$(AR) $@ $^
+	$(LIB) $@
 
-.c.o:
-	${CC} ${CFLAGS} $< -I ${HEAD} -o ${<:.c=.o}
+# Rule to create object files
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -I $(HEAD) -c $< -o $@
 
-bonus: ${NAME} ${BONUS_O} 
-		${AR} ${NAME} ${BONUS_O}
-		${AR} ${NAME} ${OBJS}
-		${LIB} ${NAME}
+#.c.o:
+#	${CC} ${CFLAGS} $< -I ${HEAD} -o ${<:.c=.o}
 
 clean:
-	${RM} ${OBJS} ${BONUS_O}
+	${RM} ${OBJ_DIR}/*.o
 
 fclean: clean
 	${RM} ${NAME}
 
 re: fclean all
 
-rebonus: fclean bonus
 .PHONY: all clean fclean re bonus rebonus
