@@ -53,7 +53,7 @@ bool	inside(const char *s, char c)
 	return (false);
 }
 
-void	*ft_memset(void *s, int c, size_t n)
+/*void	*ft_memset(void *s, int c, size_t n)
 {
 	size_t			i;
 	unsigned char	*ptr;
@@ -80,4 +80,4 @@ size_t	ft_strlen(const char *s)
 	if (s == NULL || !*s)
 		return (0);
 	return (ft_strlen(s + 1) + 1);
-}
+}*/

@@ -13,6 +13,7 @@
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
+# include "../../libft/includes/libft.h"
 # include <limits.h>
 # include <locale.h>
 # include <stdarg.h>
@@ -86,10 +87,10 @@ void	putstr_buf_n(char *s, int precision, t_data *data);
 bool	inside(const char *s, char c);
 int		partial_init(t_data *data);
 int		get_format(t_data *data);
-int		ft_strcmp(const char *s1, const char *s2);
+//int		ft_strcmp(const char *s1, const char *s2);
 int		was_neg(t_data *data);
-size_t	ft_strlen(const char *s);
-void	*ft_memset(void *s, int c, size_t n);
+//size_t	ft_strlen(const char *s);
+//void	*ft_memset(void *s, int c, size_t n);
 void	itoa_base(t_data *data, unsigned int int_val);
 
 #endif

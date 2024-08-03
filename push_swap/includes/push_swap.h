@@ -13,13 +13,14 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-# include <stdbool.h>
+# include <errno.h>
 # include <limits.h>
+# include <stdbool.h>
+# include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdint.h>
-# include "../lib/Libft/includes/libft.h"
+# include "../lib/libft/includes/libft.h"
 # include "../lib/printf/includes/ft_printf.h"
 
 typedef struct s_stack_node
