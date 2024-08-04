@@ -12,33 +12,21 @@
 
 #include "../../includes/push_swap.h"
 
-/* 
-    Create the stack with command line values
-    Checks are emvedded in the creation itself
-        ~Duplicate values
-        ~Over|Underflow
-        ~Syntax errors
-
-    Flag is useful because if it's true, i have the av in the HEAP to free
-*/
-
-void	stack_init(t_stack_node **a, char **av, bool flag_ac_2)
+void	stack_init(t_stack_node **a, char **av, bool ac_2)
 {
-	long	num;
+	long	value_to_pass;
 	ssize_t	i;
 
 	i = -1;
 	while (av[++i])
 	{
 		if (error_syntax(av[i]))
-			error_free(a, av, flag_ac_2);
-		num = ft_atol(av[i]);
-		if (num > INT_MAX || num < INT_MIN)
-			error_free(a, av, flag_ac_2);
-		if (error_repetition(*a, (int)num))
-			error_free(a, av, flag_ac_2);
-		append_node(a, (int) num);
+			ft_free_error(a, av, ac_2);
+		value_to_pass = ft_atol(av[i]);
+		if (value_to_pass > INT_MAX || value_to_pass < INT_MIN)
+			ft_free_error(a, av, ac_2);
+		if (error_duplicate(*a, (int)value_to_pass))
+			ft_free_error(a, av, ac_2);
+		append_node(a, (int) value_to_pass);
 	}
-	if (flag_ac_2)
-		free_matrix(av);
 }

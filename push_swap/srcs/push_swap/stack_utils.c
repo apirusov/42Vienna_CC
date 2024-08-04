@@ -21,18 +21,18 @@ t_stack_node	*find_last_node(t_stack_node *head)
 	return (head);
 }
 
-void	append_node(t_stack_node **stack, int num)
+void	append_node(t_stack_node **stack, int value_to_pass)
 {
 	t_stack_node	*node;
 	t_stack_node	*last_node;
 
 	if (!stack)
-		return ;
+		return (ft_puterror("Error\n"));
 	node = (t_stack_node *)malloc(sizeof(t_stack_node));
 	if (!node)
-		return;
+		return (ft_puterror("Error\n"));
 	node->next = NULL;
-	node->value = num;
+	node->value = value_to_pass;
 	if (!*stack)
 	{
 		*stack = node;
@@ -52,7 +52,7 @@ t_stack_node	*find_smallest(t_stack_node *stack)
 	t_stack_node	*smallest_node;
 
 	if (!stack)
-		return (NULL);
+		return (ft_puterror("Error\n"), NULL);
 	smallest = LONG_MAX;
 	while (stack)
 	{
@@ -69,7 +69,7 @@ t_stack_node	*find_smallest(t_stack_node *stack)
 t_stack_node	*return_cheapest(t_stack_node *stack)
 {
 	if (!stack)
-		return (NULL);
+		return (ft_puterror("Error\n"), NULL);
 	while (stack)
 	{
 		if (stack->cheapest)
@@ -79,7 +79,7 @@ t_stack_node	*return_cheapest(t_stack_node *stack)
 	return (NULL);
 }
 
-size_t	stack_len(t_stack_node *stack)
+size_t	stack_size(t_stack_node *stack)
 {
 	size_t	count;
 

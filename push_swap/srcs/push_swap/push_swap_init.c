@@ -15,16 +15,16 @@
 void	set_index(t_stack_node *stack)
 {
 	int	i;
-	int	centerline;
+	int	median;
 
 	i = 0;
 	if (!stack)
 		return ;
-	centerline = stack_len(stack) / 2;
+	median = stack_size(stack) / 2;
 	while (stack)
 	{
 		stack->index = i;
-		if (i <= centerline)
+		if (i <= median)
 			stack->above_median = true;
 		else
 			stack->above_median = false;
@@ -66,8 +66,8 @@ void	set_cost(t_stack_node *a, t_stack_node *b)
 	ssize_t	len_a;
 	ssize_t	len_b;
 
-	len_a = stack_len(a);
-	len_b = stack_len(b);
+	len_a = stack_size(a);
+	len_b = stack_size(b);
 	while (b)
 	{
 		b->push_cost = b->index;

@@ -1,0 +1,24 @@
+Algorithm: 
+    case 1: return error
+    case 2: check if_sorted and sort if needed
+    case 3: check if_sorted and sort 3
+    case 5: check if_sorted and sort 5
+    case 8: check if_sorted, push 5 into B, reverse sort them there, push into A, sort there
+    case 10: check if_sorted, sort 5 in A, reverse sort in B, push B in A
+
+    default: create chunks accordingly to the amount of numbers
+        assign to every number/node it's chunks
+        n-chunk_range = min in a + (min + max/n)
+
+        sort cheapest before pushing to B 
+
+        there will be at the end in B: 
+        chunk 5 |||||||||||
+        chunk 4 |||||||||
+        chunk 3 |||||||
+        chunk 2 ||||
+        chunk 1 ||
+        chunk 2 ||||
+        chunk 3 |||||||
+        chunk 4 |||||||||
+        chunk 5 |||||||||||

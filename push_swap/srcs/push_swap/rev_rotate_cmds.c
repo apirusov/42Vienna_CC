@@ -17,7 +17,7 @@ static void	reverse_rotate(t_stack_node **stack)
 	t_stack_node	*last;
 	int				len;
 
-	len = stack_len(*stack);
+	len = stack_size(*stack);
 	if (!*stack || !stack || 1 == len)
 		return ;
 	last = find_last_node(*stack);
@@ -32,14 +32,14 @@ void	rra(t_stack_node **a, bool checker)
 {
 	reverse_rotate(a);
 	if (!checker)
-		write(1, "rra\n", 4);
+		ft_printf("rra\n");
 }
 
 void	rrb(t_stack_node **b, bool checker)
 {
 	reverse_rotate(b);
 	if (!checker)
-		write(1, "rrb\n", 4);
+		ft_printf("rrb\n");
 }
 
 void	rrr(t_stack_node **a, t_stack_node **b, bool checker)
@@ -47,5 +47,5 @@ void	rrr(t_stack_node **a, t_stack_node **b, bool checker)
 	reverse_rotate(a);
 	reverse_rotate(b);
 	if (!checker)
-		write(1, "rrr\n", 4);
+		ft_printf("rrr\n");
 }

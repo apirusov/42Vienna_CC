@@ -16,7 +16,7 @@ static void	swap(t_stack_node **stack)
 {
 	size_t	len;
 
-	len = stack_len(*stack);
+	len = stack_size(*stack);
 	if (!*stack || !stack || 1 == len)
 		return ;
 	*stack = (*stack)->next;
@@ -32,14 +32,14 @@ void	sa(t_stack_node **a, bool checker)
 {
 	swap(a);
 	if (!checker)
-		write(1, "sa\n", 3);
+		ft_printf("sa\n");
 }
 
 void	sb(t_stack_node **b, bool checker)
 {
 	swap(b);
 	if (!checker)
-		write(1, "sb\n", 3);
+		ft_printf("sb\n");
 }
 
 void	ss(t_stack_node **a, t_stack_node **b, bool checker)
@@ -47,5 +47,5 @@ void	ss(t_stack_node **a, t_stack_node **b, bool checker)
 	swap(a);
 	swap(b);
 	if (!checker)
-		write(1, "ss\n", 3);
+		ft_printf("ss\n");
 }

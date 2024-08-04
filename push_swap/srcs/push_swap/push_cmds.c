@@ -40,12 +40,12 @@ void	pa(t_stack_node **a, t_stack_node **b, bool checker)
 {
 	push(b, a);
 	if (!checker)
-		write(1, "pa\n", 3);
+		ft_printf("pa\n");
 }
 
 void	pb(t_stack_node **b, t_stack_node **a, bool checker)
 {
 	push(a, b);
 	if (!checker)
-		write(1, "pb\n", 3);
+		ft_printf("pb\n");
 }

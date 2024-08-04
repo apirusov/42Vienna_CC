@@ -33,15 +33,15 @@ void	push_swap(t_stack_node **a, t_stack_node **b)
 	t_stack_node	*smallest;
 	ssize_t			len;
 
-	len = stack_len(*a);
-	if (len == 5)
-		handle_five(a, b);
+	len = stack_size(*a);
+	if (len == 5 && !stack_sorted(*a))
+		sort_five(a, b);
 	else
 	{
-		while (len-- > 3)
+		while (len-- > 3 && !stack_sorted(*a))
 			pb(b, a, false);
 	}
-	tiny_sort(a);
+	sort_three(a);
 	while (*b)
 	{
 		init_nodes(*a, *b);
@@ -64,17 +64,19 @@ int	main(int ac, char **av)
 
 	a = NULL;
 	b = NULL;
-	if (1 == ac || (2 == ac && !av[1][0]))
-		return (ft_putendl_fd("Error", 2), EXIT_FAILURE);
-	else if (2 == ac)
+	if (ac == 1 || (ac == 2 && !av[1][0]))
+		return (ft_puterror("Error\n"), EXIT_FAILURE);
+	else if (ac == 2)
 		av = ft_split(av[1], ' ');
-	stack_init(&a, av + 1, 2 == ac);
+	if (!av)
+		return (ft_puterror("Error\n"), EXIT_FAILURE);
+	stack_init(&a, av + 1, ac == 2);
 	if (!stack_sorted(a))
 	{
-		if (stack_len(a) == 2)
+		if (stack_size(a) == 2)
 			sa(&a, false);
-		else if (stack_len(a) == 3)
-			tiny_sort(&a);
+		else if (stack_size(a) == 3)
+			sort_three(&a);
 		else
 			push_swap(&a, &b);
 	}

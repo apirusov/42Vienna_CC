@@ -15,7 +15,7 @@
 bool	stack_sorted(t_stack_node *stack)
 {
 	if (!stack)
-		return (false);
+		return (ft_puterror("Error\n"), true);
 	while (stack->next)
 	{
 		if (stack->value > stack->next->value)

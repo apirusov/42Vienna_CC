@@ -17,7 +17,7 @@ static void	rotate(t_stack_node **stack)
 	t_stack_node	*last_node;
 	ssize_t			len;
 
-	len = stack_len(*stack);
+	len = stack_size(*stack);
 	if (!*stack || !stack || len == 1)
 		return ;
 	last_node = find_last_node(*stack);
@@ -31,21 +31,21 @@ static void	rotate(t_stack_node **stack)
 void	ra(t_stack_node **a, bool checker)
 {
 	rotate(a);
-	if (checker)
-		write(1, "ra\n", 3);
+	if (!checker)
+		ft_printf("ra\n");
 }
 
 void	rb(t_stack_node **b, bool checker)
 {
 	rotate(b);
-	if (checker)
-		write(1, "rb\n", 3);
+	if (!checker)
+		ft_printf("rb\n");
 }
 
 void	rr(t_stack_node **a, t_stack_node **b, bool checker)
 {
 	rotate(a);
 	rotate(b);
-	if (checker)
-		write(1, "rr\n", 3);
+	if (!checker)
+		ft_printf("rr\n");
 }
